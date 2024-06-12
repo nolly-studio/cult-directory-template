@@ -1,0 +1,467 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-[#FAFAFA] dark:bg-background text-foreground;
+
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+*,
+::after,
+::before {
+  border-style: solid;
+  border-width: 0;
+  box-sizing: border-box;
+}
+
+::after,
+::before {
+  border-color: #e5e7eb;
+}
+
+.shadow-elevationLight {
+  --tw-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.05),
+    0px 1px 1px 0px rgba(255, 252, 240, 0.5) inset,
+    /* using color 'paper' for inset light shadow */ 0px 0px 0px 1px
+      hsla(0, 0%, 100%, 0.1) inset,
+    0px 0px 1px 0px rgba(28, 27, 26, 0.5); /* using color '950' for slight dark outline */
+  --tw-shadow-colored: 0px 1px 1px 0px var(--tw-shadow-color),
+    inset 0px 1px 1px 0px var(--tw-shadow-color),
+    inset 0px 0px 0px 1px var(--tw-shadow-color),
+    0px 0px 1px 0px var(--tw-shadow-color);
+}
+
+.shadow-inner-shadow {
+  --tw-shadow: 0px 1px 0px 0px hsla(0, 0%, 100%, 0.02) inset,
+    0px 0px 0px 1px hsla(0, 0%, 100%, 0.02) inset,
+    0px 0px 0px 1px rgba(0, 0, 0, 0.25);
+  --tw-shadow-colored: inset 0px 1px 0px 0px var(--tw-shadow-color),
+    inset 0px 0px 0px 1px var(--tw-shadow-color),
+    0px 0px 0px 1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-custom-inner,
+.shadow-elevationLight {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.inherited-styles-for-exported-element {
+  font-family: "Inter", sans-serif;
+  visibility: visible;
+}
+
+::placeholder {
+  color: #a0aec0;
+}
+
+*,
+::after,
+::before {
+  border-color: #e2e8f0;
+  overflow-wrap: break-word;
+}
+
+::after,
+::before {
+  border-color: #8084f9;
+}
+
+*,
+::after,
+::before {
+  border-style: solid;
+  border-width: 0;
+  box-sizing: border-box;
+}
+
+.button {
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: #444bf7;
+  background-image: linear-gradient(to top right, #444bf7, #8084f9);
+  background-origin: padding-box;
+  background-position: 0 0;
+  background-repeat: repeat;
+  background-size: auto;
+  border: 2px solid #8084f9;
+  border-radius: 100px;
+  box-shadow: rgba(68, 75, 247, 0.8) 0 11px 18px -8px;
+  color: #fff;
+  /* font-size: 12px; */
+  font-weight: 600;
+  height: 2rem;
+  justify-content: center;
+  line-height: 1.2;
+  min-width: 2.5rem;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  padding-inline-end: 1rem;
+  padding-inline-start: 1rem;
+  position: relative;
+  text-wrap: nowrap;
+  transition-duration: 200ms;
+  transition-property: background-color, border-color, color, fill, stroke,
+    opacity, box-shadow, transform;
+  user-select: none;
+  vertical-align: middle;
+  white-space-collapse: collapse;
+  width: auto;
+  -webkit-box-pack: center;
+  align-items: center;
+  -webkit-box-align: center;
+  appearance: none;
+  display: inline-flex;
+}
+
+.button-secondary {
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: #050612;
+  background-image: linear-gradient(to top right, #050612, #050612);
+  background-origin: padding-box;
+  background-position: 0 0;
+  background-repeat: repeat;
+  background-size: auto;
+  border: 2px solid #050612;
+  border-radius: 100px;
+  box-shadow: rgba(68, 75, 247, 0.8) 0 11px 18px -8px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  height: 2rem;
+  justify-content: center;
+  line-height: 1.2;
+  min-width: 2.5rem;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  padding-inline-end: 1rem;
+  padding-inline-start: 1rem;
+  position: relative;
+  text-wrap: nowrap;
+  transition-duration: 200ms;
+  transition-property: background-color, border-color, color, fill, stroke,
+    opacity, box-shadow, transform;
+  user-select: none;
+  vertical-align: middle;
+  white-space-collapse: collapse;
+  width: auto;
+  -webkit-box-pack: center;
+  align-items: center;
+  -webkit-box-align: center;
+  appearance: none;
+  display: inline-flex;
+}
+
+.button:focus {
+  background-image: linear-gradient(to top right, #444bf7, #8084f9);
+  color: #fff;
+}
+
+.button:active,
+.button:hover {
+  background-image: linear-gradient(to top right, #444bf7, #8084f9);
+  color: #fff;
+}
+
+.paven {
+  background-color: #ffffff;
+  background-image: url("https://www.transparenttextures.com/patterns/arches.png");
+}
+
+.border {
+  background-clip: padding-box;
+}
+
+.button-shadow {
+  --tw-shadow: 0px 1px 0px -1px var(--tw-shadow-color),
+    0px 1px 1px -1px var(--tw-shadow-color),
+    0px 1px 2px -1px var(--tw-shadow-color),
+    0px 2px 4px -2px var(--tw-shadow-color),
+    0px 3px 6px -3px var(--tw-shadow-color);
+  --tw-shadow-colored: 0px 1px 0px -1px var(--tw-shadow-color),
+    0px 1px 1px -1px var(--tw-shadow-color),
+    0px 1px 2px -1px var(--tw-shadow-color),
+    0px 2px 4px -2px var(--tw-shadow-color),
+    0px 3px 6px -3px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.button-shadow-glow::after {
+  --tw-shadow: inset 0px 0px 0px 1px var(--tw-shadow-color),
+    inset 0px 1px 0px var(--tw-shadow-color);
+  --tw-shadow-colored: inset 0px 0px 0px 1px var(--tw-shadow-color),
+    inset 0px 1px 0px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: #958f7a;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.shadow-box {
+  box-shadow: 0 0 50px -12px rgba(208, 121, 249, 0.3);
+}
+.shadow-box2 {
+  box-shadow: 0 0 50px -12px rgba(121, 247, 249, 0.3);
+}
+
+.input-shadow {
+  --tw-shadow: 0px 1px 0px -1px var(--tw-shadow-color),
+    0px 1px 1px -1px var(--tw-shadow-color),
+    0px 1px 2px -1px var(--tw-shadow-color),
+    0px 2px 4px -2px var(--tw-shadow-color),
+    0px 3px 6px -3px var(--tw-shadow-color);
+  --tw-shadow-colored: 0px 1px 0px -1px var(--tw-shadow-color),
+    0px 1px 1px -1px var(--tw-shadow-color),
+    0px 1px 2px -1px var(--tw-shadow-color),
+    0px 2px 4px -2px var(--tw-shadow-color),
+    0px 3px 6px -3px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.input-shadow-glow::after {
+  --tw-shadow: inset 0px 0px 0px 1px var(--tw-shadow-color),
+    inset 0px 1px 0px var(--tw-shadow-color);
+  --tw-shadow-colored: inset 0px 0px 0px 1px var(--tw-shadow-color),
+    inset 0px 1px 0px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+@layer utilities {
+  @keyframes spin-scale {
+    0%,
+    100% {
+      transform: rotate(0deg) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: rotate(180deg) scale(1.2);
+      opacity: 0.5;
+    }
+  }
+}
+
+@layer utilities {
+  @keyframes spin-scale-skew {
+    0%,
+    100% {
+      transform: rotate(0deg) scale(1) skew(0deg, 0deg) translate(0, 0);
+      opacity: 1;
+    }
+    25% {
+      transform: rotate(90deg) scale(1.1) skew(10deg, 10deg)
+        translate(5px, -5px);
+      opacity: 0.7;
+    }
+    50% {
+      transform: rotate(180deg) scale(1.2) skew(20deg, 20deg)
+        translate(10px, -10px);
+      opacity: 0.5;
+    }
+    75% {
+      transform: rotate(270deg) scale(1.1) skew(10deg, 10deg)
+        translate(5px, -5px);
+      opacity: 0.7;
+    }
+  }
+}
+
+/* @keyframes spin-scale {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes scale-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.5);
+  }
+}
+
+.animate-[spin-scale_40s_linear_infinite] {
+  animation: spin-scale 40s linear infinite;
+}
+
+.animate-[spin-scale_30s_linear_infinite] {
+  animation: spin-scale 30s linear infinite;
+}
+
+.animate-[spin-scale_20s_linear_infinite] {
+  animation: spin-scale 20s linear infinite;
+}
+
+.animate-[spin-scale_15s_linear_infinite] {
+  animation: spin-scale 15s linear infinite;
+}
+
+.animate-[spin-scale_10s_linear_infinite] {
+  animation: spin-scale 10s linear infinite;
+}
+
+.animate-[spin-scale_80s_linear_infinite] {
+  animation: spin-scale 80s linear infinite;
+}
+
+.animate-[spin-scale_60s_linear_infinite] {
+  animation: spin-scale 60s linear infinite;
+} */
+
+@layer utilities {
+  @keyframes spin-scale {
+    0%,
+    100% {
+      transform: rotate(0deg) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: rotate(180deg) scale(1.2);
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes spin-scale-skew {
+    0%,
+    100% {
+      transform: rotate(0deg) scale(1) skew(0deg, 0deg) translate(0, 0);
+      opacity: 1;
+    }
+    25% {
+      transform: rotate(90deg) scale(1.1) skew(10deg, 10deg)
+        translate(5px, -5px);
+      opacity: 0.7;
+    }
+    50% {
+      transform: rotate(180deg) scale(1.2) skew(20deg, 20deg)
+        translate(10px, -10px);
+      opacity: 0.5;
+    }
+    75% {
+      transform: rotate(270deg) scale(1.1) skew(10deg, 10deg)
+        translate(5px, -5px);
+      opacity: 0.7;
+    }
+  }
+
+  .animate-[spin-scale_40s_linear_infinite] {
+    animation: spin-scale 40s linear infinite;
+  }
+
+  .animate-[spin-scale_30s_linear_infinite] {
+    animation: spin-scale 30s linear infinite;
+  }
+
+  .animate-[spin-scale_20s_linear_infinite] {
+    animation: spin-scale 20s linear infinite;
+  }
+
+  .animate-[spin-scale_15s_linear_infinite] {
+    animation: spin-scale 15s linear infinite;
+  }
+
+  .animate-[spin-scale_10s_linear_infinite] {
+    animation: spin-scale 10s linear infinite;
+  }
+
+  .animate-[spin-scale_80s_linear_infinite] {
+    animation: spin-scale 80s linear infinite;
+  }
+
+  .animate-[spin-scale_60s_linear_infinite] {
+    animation: spin-scale 60s linear infinite;
+  }
+}
