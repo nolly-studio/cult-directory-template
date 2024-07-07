@@ -144,6 +144,7 @@ Designed to help you build and launch well designed startups fast.
 
 
 <div id="supabase" >
+
 ## Supabase
 
 ### Install the Supabase CLI
