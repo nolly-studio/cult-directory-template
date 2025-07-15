@@ -39,8 +39,10 @@ export async function getNews(category?: string, limit?: number): Promise<NewsAr
   const { data, error } = await query
 
   if (error) {
-    console.error('Error fetching news:', error)
-    return []
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error fetching news:', error)
+    }
+    throw new Error('فشل في تحميل الأخبار. يرجى المحاولة مرة أخرى.')
   }
 
   return data || []
@@ -57,8 +59,10 @@ export async function getNewsById(id: string): Promise<NewsArticle | null> {
     .single()
 
   if (error) {
-    console.error('Error fetching news article:', error)
-    return null
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error fetching news article:', error)
+    }
+    throw new Error('فشل في تحميل المقال. يرجى المحاولة مرة أخرى.')
   }
 
   return data
@@ -76,8 +80,10 @@ export async function getFeaturedNews(limit: number = 3): Promise<NewsArticle[]>
     .limit(limit)
 
   if (error) {
-    console.error('Error fetching featured news:', error)
-    return []
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error fetching featured news:', error)
+    }
+    throw new Error('فشل في تحميل الأخبار المميزة. يرجى المحاولة مرة أخرى.')
   }
 
   return data || []

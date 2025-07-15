@@ -7,31 +7,7 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
 import { AIToolCard } from "./ai-tool-card"
-
-interface Product {
-  id: string
-  created_at: string
-  full_name: string
-  email: string
-  twitter_handle: string
-  product_website: string
-  codename: string
-  punchline: string
-  description: string
-  logo_src: string
-  user_id: string
-  tags: string[]
-  view_count: number
-  approved: boolean
-  labels: string[]
-  categories: string
-}
-
-export interface SEOCardGridProps {
-  sortedData: Product[]
-  filteredFeaturedData: Product[] | null
-  children?: React.ReactNode
-}
+import { ErrorBoundaryWrapper } from "./error-boundary"
 
 interface Product {
   id: string
@@ -93,16 +69,20 @@ const TailwindMasonryGrid: React.FC<TailwindMasonryGridProps> = ({
   filteredData,
 }) => {
   return (
-    <div className="w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
-        {filteredData &&
-          filteredData.map((data, index) => (
-            <div key={`${index}-${data.id}`} className="flex">
-              <AIToolCard data={data} order={index} />
-            </div>
-          ))}
+    <ErrorBoundaryWrapper>
+      <div className="w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
+          {filteredData &&
+            filteredData.map((data, index) => (
+              <div key={`${index}-${data.id}`} className="flex">
+                <ErrorBoundaryWrapper>
+                  <AIToolCard data={data} order={index} />
+                </ErrorBoundaryWrapper>
+              </div>
+            ))}
+        </div>
       </div>
-    </div>
+    </ErrorBoundaryWrapper>
   )
 }
 
@@ -110,20 +90,24 @@ export const FeaturedGrid: React.FC<{ featuredData: Product[] }> = ({
   featuredData,
 }) => {
   return (
-    <div className="w-full mx-auto bg-accent/20 border border-dashed border-border py-4 px-4 rounded-xl">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {featuredData.map((data, index) => (
-          <div key={`featured-${data.id}-${index}`} className="flex">
-            <AIToolCard 
-              trim={true} 
-              data={data} 
-              order={index} 
-              context="featured" 
-            />
-          </div>
+    <ErrorBoundaryWrapper>
+      <div className="w-full mx-auto bg-accent/20 border border-dashed border-border py-4 px-4 rounded-xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {featuredData.map((data, index) => (
+            <div key={`featured-${data.id}-${index}`} className="flex">
+              <ErrorBoundaryWrapper>
+                <AIToolCard 
+                  trim={true} 
+                  data={data} 
+                  order={index} 
+                  context="featured" 
+                />
+              </ErrorBoundaryWrapper>
+            </div>
         ))}
       </div>
     </div>
+    </ErrorBoundaryWrapper>
   )
 }
 

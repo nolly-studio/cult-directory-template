@@ -7,6 +7,7 @@ import { NavSidebar } from "@/components/nav"
 import { AdaptiveLayout } from "@/components/adaptive-layout"
 import { FadeIn } from "@/components/cult/fade-in"
 import { ContentImage } from "@/components/content-image"
+import { ErrorBoundaryWrapper } from "@/components/error-boundary"
 
 export const dynamic = "force-dynamic"
 
@@ -69,7 +70,8 @@ export default async function NewsPage({
       />
       
       <AdaptiveLayout>
-        <div className="min-h-screen bg-background">
+        <ErrorBoundaryWrapper>
+          <div className="min-h-screen bg-background">
           {/* News Header */}
           <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container mx-auto px-4 py-6 max-w-7xl">
@@ -273,6 +275,7 @@ export default async function NewsPage({
             </FadeIn>
           </div>
         </div>
+        </ErrorBoundaryWrapper>
       </AdaptiveLayout>
     </>
   )

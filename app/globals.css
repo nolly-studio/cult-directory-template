@@ -7,65 +7,67 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    /* Teal Network Theme - Inspired by arabie.ai brand */
+    --background: 42 55% 88%; /* Much more golden creamy background */
+    --foreground: 180 45% 20%; /* Dark teal for text */
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card: 0 0% 100%; /* Clean white cards */
+    --card-foreground: 180 45% 20%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%; /* Clean white popovers */
+    --popover-foreground: 180 45% 20%;
 
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 180 35% 45%; /* Main teal color */
+    --primary-foreground: 0 0% 98%; /* Clean white text on teal */
 
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary: 0 0% 96%; /* Clean light gray/white for buttons */
+    --secondary-foreground: 180 45% 25%;
 
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
+    --muted: 0 0% 96%; /* Clean light gray/white */
+    --muted-foreground: 180 25% 35%;
 
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    --accent: 0 0% 98%; /* Clean white accent */
+    --accent-foreground: 180 45% 25%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    --border: 180 20% 80%; /* Teal border */
+    --input: 180 15% 85%; /* Light teal input */
+    --ring: 180 35% 45%; /* Teal focus ring */
 
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
+    /* Dark Teal Network Theme */
+    --background: 180 30% 8%; /* Dark teal background */
+    --foreground: 180 15% 90%; /* Light teal text */
 
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card: 180 25% 12%; /* Slightly lighter dark teal */
+    --card-foreground: 180 15% 90%;
 
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 180 25% 12%;
+    --popover-foreground: 180 15% 90%;
 
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    --primary: 180 40% 60%; /* Bright teal */
+    --primary-foreground: 180 30% 8%;
 
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 180 20% 20%; /* Medium dark teal */
+    --secondary-foreground: 180 15% 85%;
 
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
+    --muted: 180 15% 18%; /* Muted dark teal */
+    --muted-foreground: 180 10% 60%;
 
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 180 25% 25%; /* Accent dark teal */
+    --accent-foreground: 180 15% 85%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 62.8% 50%; /* Brighter red for dark mode */
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --border: 180 20% 25%; /* Teal border */
+    --input: 180 15% 20%; /* Dark teal input */
+    --ring: 180 40% 60%; /* Bright teal focus ring */
   }
 }
 

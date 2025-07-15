@@ -68,7 +68,8 @@
     "typescript": "5.3.3",
     "vaul": "^0.9.1",
     "zod": "^3.23.8",
-    "zod-validation-error": "^3.3.0"
+    "zod-validation-error": "^3.3.0",
+    "@vercel/analytics": "^1.5.0"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^3.7.2",

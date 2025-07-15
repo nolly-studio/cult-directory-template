@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next'
 import { getProducts } from '@/app/actions/product'
 import { getTutorials } from '@/app/actions/tutorials'
-import { getLatestNews } from '@/app/actions/news'
+import { getNews, getNewsFilters } from '@/app/actions/news'
 import { getBlogArticles } from '@/app/actions/blog'
+import { getCourses } from '@/app/actions/courses'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,11 +11,13 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.arabie.ai'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get all dynamic content
-  const [products, tutorials, news, blogArticles] = await Promise.all([
+  const [products, tutorials, news, newsFilters, blogArticles, courses] = await Promise.all([
     getProducts(), // Get all products
     getTutorials(),
-    getLatestNews(1000), // Get all news
+    getNews(undefined, 1000), // Get all news
+    getNewsFilters(), // Get news categories
     getBlogArticles(undefined, undefined, undefined, 1000), // Get all blog articles
+    getCourses(), // Get all courses
   ])
 
   // Static pages
@@ -80,6 +83,61 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+    // Additional important pages
+    {
+      url: `${BASE_URL}/tools`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/learn`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/products`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/library`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/about`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/contact`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/newsletter`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/privacy`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: `${BASE_URL}/terms`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
   ]
 
   // Product pages
@@ -114,5 +172,39 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
-  return [...staticPages, ...productPages, ...tutorialPages, ...newsPages, ...blogPages]
+  // Use products as tools since they're AI tools
+  const toolPages: MetadataRoute.Sitemap = products.map((product) => ({
+    url: `${BASE_URL}/tools/${product.id}`,
+    lastModified: product.updated_at ? new Date(product.updated_at) : new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }))
+
+  // Course pages
+  const coursePages: MetadataRoute.Sitemap = courses.map((course) => ({
+    url: `${BASE_URL}/learn/${course.id}`,
+    lastModified: course.updated_at ? new Date(course.updated_at) : new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }))
+
+  // Category pages for news
+  const categoryPages: MetadataRoute.Sitemap = newsFilters.categories.map((category) => ({
+    url: `${BASE_URL}/news?category=${encodeURIComponent(category)}`,
+    lastModified: new Date(),
+    changeFrequency: 'daily',
+    priority: 0.6,
+  }))
+
+
+  return [
+    ...staticPages,
+    ...productPages,
+    ...tutorialPages,
+    ...newsPages,
+    ...blogPages,
+    ...toolPages,
+    ...coursePages,
+    ...categoryPages,
+  ]
 }

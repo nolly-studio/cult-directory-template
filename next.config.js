@@ -108,54 +108,65 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
-      // More AI tool domains
+      // Specific AI tool domains (secure list)
       {
         protocol: "https",
-        hostname: "app-logos.com",
+        hostname: "openai.com",
         port: "",
         pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "*.ai",
+        hostname: "anthropic.com",
         port: "",
         pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "*.io",
-        port: "",
-        pathname: "/**",
-      },
-      // Logo and branding CDNs
-      {
-        protocol: "https",
-        hostname: "cdn.logojoy.com",
+        hostname: "midjourney.com",
         port: "",
         pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "*.jsdelivr.net",
+        hostname: "stability.ai",
         port: "",
         pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "*.unpkg.com",
+        hostname: "character.ai",
         port: "",
         pathname: "/**",
       },
-      // Company websites and favicons
       {
         protocol: "https",
-        hostname: "*.com",
+        hostname: "perplexity.ai",
         port: "",
-        pathname: "/favicon.ico",
+        pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "*.app",
+        hostname: "replicate.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "huggingface.co",
+        port: "",
+        pathname: "/**",
+      },
+      // CDNs for logos
+      {
+        protocol: "https",
+        hostname: "cdn.jsdelivr.net",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "unpkg.com",
         port: "",
         pathname: "/**",
       },

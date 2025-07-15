@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm i:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm run:*)",
+      "Bash(cp:*)",
+      "Bash(npm run build:*)",
+      "Bash(rm:*)",
+      "Bash(taskkill:*)",
+      "Bash(pnpm store prune:*)",
+      "Bash(rd:*)"
+    ],
+    "deny": []
+  }
+}

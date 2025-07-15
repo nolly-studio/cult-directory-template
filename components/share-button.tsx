@@ -87,7 +87,7 @@ export default function ShareButton({
           )}
         </DropdownMenuItem>
         
-        {typeof navigator !== 'undefined' && navigator.share && (
+        {typeof navigator !== 'undefined' && typeof navigator.share === 'function' && (
           <DropdownMenuItem onClick={handleNativeShare}>
             <Share2 className="h-4 w-4 mr-2" />
             مشاركة

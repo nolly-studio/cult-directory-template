@@ -9,8 +9,7 @@ import { Check, Copy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-// Import highlight.js theme
-import "highlight.js/styles/github.css"
+// Note: highlight.js styles are imported via CDN or global CSS
 
 interface MarkdownRendererProps {
   content: string
