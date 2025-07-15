@@ -9,14 +9,54 @@
 /* RTL specific adjustments */
 [dir="rtl"] {
   text-align: right;
+  direction: rtl;
 }
 
 [dir="rtl"] .text-left {
   text-align: right;
 }
 
+/* For Arabic text that should always be right-aligned in RTL */
 [dir="rtl"] .text-right {
-  text-align: left;
+  text-align: right !important;
+}
+
+/* Force RTL direction for Arabic content */
+[dir="rtl"] .rtl-text {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+/* Ensure Arabic text flows correctly */
+.arabic-text {
+  direction: rtl !important;
+  text-align: right !important;
+  unicode-bidi: embed;
+}
+
+/* Stronger RTL enforcement for chapter titles and mixed content */
+.arabic-chapter-title {
+  direction: rtl !important;
+  text-align: right !important;
+  unicode-bidi: bidi-override !important;
+  writing-mode: horizontal-tb;
+}
+
+/* For mixed Arabic/English content like "الفصل 1: ChatGPT" */
+.mixed-content-rtl {
+  direction: rtl !important;
+  text-align: right !important;
+  unicode-bidi: isolate !important;
+}
+
+/* Chapter titles - use normal bidi behavior to preserve English words */
+h4.mixed-content-rtl,
+.chapter-title-rtl {
+  direction: rtl !important;
+  text-align: right !important;
+  unicode-bidi: normal !important;
+  display: block !important;
+  width: 100% !important;
 }
 
 /* Adjust spacing for RTL */

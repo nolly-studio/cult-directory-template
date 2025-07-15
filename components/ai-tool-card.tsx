@@ -3,10 +3,11 @@
 import { useOptimistic } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Star, Eye, Globe, DollarSign, Sparkles, Zap, Brain } from "lucide-react"
+import { Star, Eye, Globe, DollarSign, Sparkles, Zap, Brain, ExternalLink } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { cn, codeNameToSlug } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import MinimalCard, {
   MinimalCardContent,
   MinimalCardDescription,
@@ -83,6 +84,26 @@ export const AIToolCard: React.FC<{
     incrementClickCount(data.id)
   }
 
+  const handleTryNow = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    // Define demo URLs for specific tools
+    const demoUrls: { [key: string]: string } = {
+      'ChatGPT': 'https://chat.openai.com',
+      'Claude': 'https://claude.ai/chat',
+      'Perplexity': 'https://perplexity.ai'
+    }
+    
+    const demoUrl = demoUrls[data.codename] || data.product_website
+    if (demoUrl && typeof window !== 'undefined') {
+      // Track the demo click
+      incrementClickCount(data.id)
+      window.open(demoUrl, '_blank', 'noopener,noreferrer')
+    }
+  }
+
+  const hasTryNowFeature = ['ChatGPT', 'Claude', 'Perplexity'].includes(data.codename)
   const Icon = categoryIcons[data.tool_type as keyof typeof categoryIcons] || Brain
 
   return (
@@ -94,8 +115,8 @@ export const AIToolCard: React.FC<{
       className="group relative w-full h-full"
     >
       <Link
-        href={`/products/${data.id}?from=${context}`}
-        key={`/products/${data.id}`}
+        href={`/tools/${codeNameToSlug(data.codename)}?from=${context}`}
+        key={`/tools/${data.id}`}
         className=""
         onClick={handleClick}
       >
@@ -165,6 +186,20 @@ export const AIToolCard: React.FC<{
                 </div>
               </div>
             </div>
+
+            {/* Try Now Button */}
+            {hasTryNowFeature && (
+              <div className="px-4 pb-3">
+                <Button 
+                  onClick={handleTryNow}
+                  size="sm" 
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-medium"
+                >
+                  <ExternalLink className="w-3 h-3 ml-1" />
+                  جرّب مجاناً
+                </Button>
+              </div>
+            )}
 
             <MinimalCardFooter>
               <div className="flex items-center justify-between w-full">

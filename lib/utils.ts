@@ -26,3 +26,12 @@ export function formatBytes(
 export const truncateString = (str: string, num: number) => {
   return str?.length > num ? `${str?.substring(0, num)}...` : str
 }
+
+// Helper function to convert codename to URL slug
+export function codeNameToSlug(codename: string): string {
+  return codename
+    .toLowerCase()
+    .replace(/\./g, '-')
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9\-]/g, '')
+}

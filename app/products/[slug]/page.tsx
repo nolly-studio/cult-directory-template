@@ -2,17 +2,21 @@ import { notFound, redirect } from "next/navigation"
 import { Metadata } from "next"
 
 import { FadeIn } from "@/components/cult/fade-in"
-import { getProductById } from "@/app/actions/product"
+import { getProductById, getProductBySlug, incrementProductViews } from "@/app/actions/product"
 
 import { ProductDetails } from "./details"
 
-// JSON-LD structured data for better SEO
+// Enhanced JSON-LD structured data for better SEO
 function generateProductJsonLd(product: any) {
+  const arabicName = product.arabic_name || product.codename
+  const englishName = product.codename
+  
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: product.arabic_name || product.codename,
-    description: product.arabic_description || product.description,
+    name: `${arabicName} بالعربي`,
+    alternateName: englishName,
+    description: product.arabic_description || product.description || `${arabicName} - أداة ذكاء اصطناعي متقدمة مع شرح مفصل باللغة العربية`,
     image: product.logo_src,
     applicationCategory: product.categories || "AI Tool",
     operatingSystem: "Web",
@@ -25,15 +29,39 @@ function generateProductJsonLd(product: any) {
     aggregateRating: product.averageRating ? {
       "@type": "AggregateRating",
       ratingValue: product.averageRating,
-      reviewCount: product.reviewCount || 0
+      reviewCount: product.reviewCount || 0,
+      bestRating: 5,
+      worstRating: 1
     } : undefined,
     author: {
       "@type": "Organization",
-      name: "العربي للذكاء الاصطناعي"
+      name: "العربي للذكاء الاصطناعي",
+      url: "https://arabie.ai",
+      logo: "https://arabie.ai/logo.png"
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "العربي للذكاء الاصطناعي",
+      url: "https://arabie.ai"
     },
     inLanguage: ["ar", "en"],
-    keywords: product.tags?.join(", "),
-    url: `https://theaiarab.com/products/${product.id}`
+    keywords: [
+      `${arabicName} بالعربي`,
+      `${englishName} شرح عربي`,
+      `كيفية استخدام ${arabicName}`,
+      "أدوات الذكاء الاصطناعي",
+      product.categories,
+      product.tags?.join(", ")
+    ].filter(Boolean).join(", "),
+    url: `https://theaiarab.com/products/${product.codename.toLowerCase().replace(/\./g, '-').replace(/\s+/g, '-')}`,
+    datePublished: product.created_at,
+    dateModified: product.updated_at || product.created_at,
+    isAccessibleForFree: product.is_free,
+    educationalUse: "تعلم استخدام أدوات الذكاء الاصطناعي",
+    audience: {
+      "@type": "Audience",
+      audienceType: "المستخدمين العرب المهتمين بالذكاء الاصطناعي"
+    }
   }
 }
 
@@ -42,7 +70,7 @@ export async function generateMetadata({
 }: { 
   params: { slug: string } 
 }): Promise<Metadata> {
-  const data = await getProductById(params.slug)
+  const data = await getProductBySlug(params.slug)
   
   if (!data || data.length === 0) {
     return {
@@ -52,21 +80,55 @@ export async function generateMetadata({
 
   const product = data[0]
   
+  // Create SEO-optimized title and description
+  const arabicName = product.arabic_name || product.codename
+  const englishName = product.codename
+  const seoTitle = `${arabicName} بالعربي - شرح مفصل وطريقة الاستخدام | العربي للذكاء الاصطناعي`
+  const seoDescription = product.arabic_description || product.description || 
+    `شرح شامل لـ ${arabicName} (${englishName}) بالعربية - كيفية الاستخدام، المميزات، والأسعار. ${product.is_free ? 'مجاني تماماً' : 'جرب الآن'} ⚡`
+  
+  // Add relevant keywords optimized for Arabic SEO
+  const keywords = [
+    `${arabicName} بالعربي`,
+    `${englishName} شرح عربي`,
+    `كيفية استخدام ${arabicName}`,
+    `${arabicName} مجاني`,
+    `شرح ${arabicName} بالتفصيل`,
+    `تحميل ${arabicName}`,
+    `${arabicName} للمبتدئين`,
+    `دليل ${arabicName}`,
+    `أدوات الذكاء الاصطناعي`,
+    `AI tools Arabic`,
+    `ذكاء اصطناعي مجاني`,
+    `تطبيقات الذكاء الاصطناعي`,
+    product.categories,
+    product.difficulty_level,
+    product.is_free ? 'مجاني' : 'مدفوع',
+    'للعرب',
+    'باللغة العربية'
+  ].filter(Boolean).join(', ')
+
   return {
-    title: `${product.arabic_name || product.codename} - العربي للذكاء الاصطناعي`,
-    description: product.arabic_description || product.description || `اكتشف ${product.arabic_name || product.codename} - أداة ذكاء اصطناعي متقدمة للمستخدمين العرب`,
+    title: seoTitle,
+    description: seoDescription,
+    keywords,
     openGraph: {
-      title: product.arabic_name || product.codename,
-      description: product.arabic_description || product.description,
+      title: `${arabicName} بالعربي - شرح مفصل`,
+      description: seoDescription,
       images: product.logo_src ? [product.logo_src] : undefined,
       type: 'website',
-      url: `https://theaiarab.com/products/${product.id}`,
+      url: `https://arabie.ai/products/${product.codename.toLowerCase().replace(/\./g, '-').replace(/\s+/g, '-')}`,
+      siteName: 'العربي للذكاء الاصطناعي',
+      locale: 'ar_SA',
     },
     twitter: {
       card: 'summary_large_image',
-      title: product.arabic_name || product.codename,
-      description: product.arabic_description || product.description,
+      title: `${arabicName} بالعربي`,
+      description: seoDescription,
       images: product.logo_src ? [product.logo_src] : undefined,
+    },
+    alternates: {
+      canonical: `https://arabie.ai/products/${product.codename.toLowerCase().replace(/\./g, '-').replace(/\s+/g, '-')}`,
     }
   }
 }
@@ -78,12 +140,15 @@ const ProductIdPage = async ({
   params: { slug: string }
   searchParams: { from?: string; category?: string; tag?: string; label?: string }
 }) => {
-  let data = await getProductById(params.slug)
+  let data = await getProductBySlug(params.slug)
 
   if (!data) {
     notFound()
     // redirect("/")
   }
+
+  // Increment view count (fire and forget)
+  incrementProductViews(data[0].id).catch(console.error)
 
   return (
     <>

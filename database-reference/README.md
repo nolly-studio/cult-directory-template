@@ -33,6 +33,7 @@ Each table has its own file containing:
 ### Additional Reference Files:
 - **site-management.sql** - Site settings and email campaigns
 - **admin_activity_logs.sql** - Admin activity tracking and audit trails
+- **view_tracking_system.sql** - View counting and analytics system
 - **common-analytics.sql** - Cross-table insights and reports
 - **quick-reference.sql** - Essential commands and connection info
 

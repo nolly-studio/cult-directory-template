@@ -5,7 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { PersonStanding, Tag, View } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { cn, codeNameToSlug } from "@/lib/utils"
 import MinimalCard, {
   MinimalCardContent,
   MinimalCardDescription,
@@ -83,8 +83,8 @@ export const ResourceCard: React.FC<{
       className="group relative  break-inside-avoid w-full"
     >
       <Link
-        href={`/products/${data.id}`}
-        key={`/products/${data.id}`}
+        href={`/tools/${codeNameToSlug(data.codename)}`}
+        key={`/tools/${data.id}`}
         className=""
         onClick={handleClick}
       >

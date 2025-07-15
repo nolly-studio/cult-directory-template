@@ -113,21 +113,25 @@ export function MediaBrowser({ bucket, search, type, view = 'grid' }: MediaBrows
 
   const handleCopyUrl = async (url: string) => {
     try {
-      await navigator.clipboard.writeText(url)
-      toast.success('تم نسخ الرابط')
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        await navigator.clipboard.writeText(url)
+        toast.success('تم نسخ الرابط')
+      }
     } catch (error) {
       toast.error('فشل في نسخ الرابط')
     }
   }
 
   const handleDownload = (file: MediaFile) => {
-    const link = document.createElement('a')
-    link.href = file.public_url
-    link.download = file.original_filename
-    link.target = '_blank'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    if (typeof document !== 'undefined') {
+      const link = document.createElement('a')
+      link.href = file.public_url
+      link.download = file.original_filename
+      link.target = '_blank'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
   }
 
   const handleDelete = async (file: MediaFile) => {

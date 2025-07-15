@@ -59,7 +59,7 @@ export const ProductDetails = ({
           <Breadcrumb>
             <BreadcrumbItem>
               <BreadcrumbLink href="/">الأدوات</BreadcrumbLink>/
-              <BreadcrumbLink href={`/products/${product.id}`}>
+              <BreadcrumbLink href={`/products/${product.codename.toLowerCase().replace(/\./g, '-').replace(/\s+/g, '-')}`}>
                 {(product as any).arabic_name || product.codename.substring(0, 20)}
               </BreadcrumbLink>
             </BreadcrumbItem>

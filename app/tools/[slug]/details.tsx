@@ -1,0 +1,242 @@
+"use client"
+
+import React from "react"
+import Link from "next/link"
+import {
+  ArrowLeft,
+  Blocks,
+  Edit2Icon,
+  ExternalLink,
+  Hash,
+  HeartIcon,
+  MessageSquareTextIcon,
+  Sparkles,
+  Tag,
+} from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+} from "@/components/ui/breadcrumb"
+import { Button } from "@/components/ui/button"
+import { CardDescription, CardTitle } from "@/components/ui/card"
+import { ProductLogo } from "@/components/product-logo"
+import { ProductReviews } from "@/components/product-reviews"
+
+interface Product {
+  id: string
+  created_at: string
+  full_name: string
+  email: string
+  twitter_handle: string
+  product_website: string
+  codename: string
+  punchline: string
+  description: string
+  logo_src: string
+  user_id: string
+  tags: string[]
+  view_count: number
+  approved: boolean
+  labels: string[]
+  categories: string
+}
+
+export const ProductDetails = ({ 
+  product, 
+  searchParams 
+}: { 
+  product: Product
+  searchParams?: { from?: string; category?: string; tag?: string; label?: string }
+}) => {
+  return (
+    <div className={cn("py-4 relative flex flex-col h-full")}>
+    <div className="w-full gap-8 py-6 relative items-center">
+      <div className="grid grid-cols-6 md:grid-cols-12 gap-8 w-full">
+        <div className="space-y-6 col-span-6 md:col-span-5 md:mt-12 z-10">
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">الأدوات</BreadcrumbLink>/
+              <BreadcrumbLink href={`/tools/${product.codename.toLowerCase().replace(/\./g, '-').replace(/\s+/g, '-')}`}>
+                {(product as any).arabic_name || product.codename.substring(0, 20)}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+          <CardTitle className="text-6xl tracking-tighter font-extrabold text-neutral-900 dark:text-neutral-200">
+            {(product as any).arabic_name || product.codename}
+          </CardTitle>
+          {product.punchline && (
+            <CardDescription className="md:text-xl text-lg tracking-tight text-neutral-800 text-balance dark:text-neutral-400 mb-4">
+              {product.punchline}
+            </CardDescription>
+          )}
+          <CardDescription className="md:text-xl text-lg tracking-tight text-neutral-800 text-balance dark:text-neutral-400 flex gap-2 items-center ">
+            <Blocks className="stroke-1 size-8" />{" "}
+            <span className="flex-wrap">{product.categories}</span>
+          </CardDescription>
+          {product.tags.length >= 1 && (
+            <CardDescription className="md:text-xl text-lg tracking-tight text-neutral-800 text-balance dark:text-neutral-400 flex gap-2 items-center ">
+              <Tag className="stroke-1 size-8" />{" "}
+              <span className="flex-wrap">{product.tags.join(", ")}</span>
+            </CardDescription>
+          )}
+
+          {(() => {
+            const from = searchParams?.from
+            
+            if (from === 'featured') {
+              return (
+                <Link
+                  href="/#featured"
+                  className="py-4 md:flex items-center text-2xl font-semibold text-yellow-500  z-10 hidden"
+                >
+                  <ArrowLeft className="mr-2" /> العودة للأدوات المميزة
+                </Link>
+              )
+            }
+            
+            if (searchParams?.category) {
+              return (
+                <Link
+                  href={`/tools?category=${searchParams.category}`}
+                  className="py-4 md:flex items-center text-2xl font-semibold text-yellow-500  z-10 hidden"
+                >
+                  <ArrowLeft className="mr-2" /> العودة لفئة {searchParams.category}
+                </Link>
+              )
+            }
+            
+            return (
+              <Link
+                href={`/tools`}
+                className="py-4 md:flex items-center text-2xl font-semibold text-yellow-500  z-10 hidden"
+              >
+                <ArrowLeft className="ml-2" /> العودة لجميع الأدوات
+              </Link>
+            )
+          })()}
+        </div>
+
+        <div
+          className={cn(
+            "w-full col-span-7 p-3 md:p-7 rounded-[36px] md:rounded-[58px] border border-black/10 space-y-10",
+            "bg-white dark:bg-[#1E1E1E]  shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset,0_0.5px_0.5px_rgba(0,0,0,0.05)_inset,0_-0.5px_0.5px_rgba(0,0,0,0.05)_inset,0_1px_2px_rgba(0,0,0,0.1)] dark:shadow-[0_0_0_0.5px_rgba(255,255,255,0.06)_inset,0_0.5px_0.5px_rgba(255,255,255,0.1)_inset,0_-0.5px_0.5px_rgba(255,255,255,0.1)_inset,0_0.5px_1px_rgba(0,0,0,0.3),0_1px_2px_rgba(0,0,0,0.4)]"
+          )}
+        >
+          <div className="w-full p-1 md:p-3 rounded-[28px] md:rounded-[36px] bg-[#3d3d3d]">
+            <div className="w-full aspect-square rounded-3xl overflow-hidden">
+              <ProductLogo 
+                logo_src={product.logo_src}
+                codename={product.codename}
+                arabic_name={(product as any).arabic_name}
+                tool_type={(product as any).tool_type}
+                className="w-full h-full rounded-none"
+                showFallbackIcon={true}
+              />
+            </div>
+          </div>
+          <CardDescription className="text-2xl tracking-tight leading-tight text-neutral-800 text-balance dark:text-neutral-400">
+            {(product as any).arabic_description || product.description}
+          </CardDescription>
+          
+          {/* Additional Product Information */}
+          <div className="space-y-3">
+            {(product as any).difficulty_level && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-muted-foreground">مستوى الصعوبة:</span>
+                <span className="text-sm">{(product as any).difficulty_level}</span>
+              </div>
+            )}
+            {(product as any).is_free !== undefined && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-muted-foreground">السعر:</span>
+                <span className="text-sm">{(product as any).is_free ? 'مجاني' : 'مدفوع'}</span>
+              </div>
+            )}
+            {(product as any).language_support && (product as any).language_support.length > 0 && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-muted-foreground">اللغات المدعومة:</span>
+                <span className="text-sm">{(product as any).language_support.join(', ')}</span>
+              </div>
+            )}
+          </div>
+
+          <div className="md:text-xl sm:text-lg tracking-tight text-neutral-800 text-balance dark:text-neutral-400 flex gap-2 items-center flex-wrap text-sm">
+            {product.labels[0] !== "unlabeled" &&
+              product.labels.map((label, index) => (
+                <Link
+                  href={`/tools?label=${label}`}
+                  key={index}
+                  className="flex-wrap flex gap-1"
+                >
+                  <Hash className="stroke-1 size-4" /> <span>{label}</span>
+                </Link>
+              ))}
+          </div>
+
+          {product.product_website && (
+            <Button
+              asChild
+              variant="secondary"
+              size="lg"
+              className="w-full flex items-center justify-center py-6 text-lg rounded-[44px]"
+            >
+              <a
+                href={product.product_website}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <span className="font-semibold">زيارة الموقع</span>
+                <ExternalLink className="mr-2 h-4 w-4" />
+              </a>
+            </Button>
+          )}
+        </div>
+      </div>
+    </div>
+    {(() => {
+      const from = searchParams?.from
+      
+      if (from === 'featured') {
+        return (
+          <Link
+            href="/#featured"
+            className="py-4 md:hidden items-center text-2xl font-semibold text-yellow-500  z-10 w-full flex"
+          >
+            <ArrowLeft className="ml-2" /> العودة للأدوات المميزة
+          </Link>
+        )
+      }
+      
+      if (searchParams?.category) {
+        return (
+          <Link
+            href={`/tools?category=${searchParams.category}`}
+            className="py-4 md:hidden items-center text-2xl font-semibold text-yellow-500  z-10 w-full flex"
+          >
+            <ArrowLeft className="ml-2" /> العودة لفئة {searchParams.category}
+          </Link>
+        )
+      }
+      
+      return (
+        <Link
+          href={`/`}
+          className="py-4 md:hidden items-center text-2xl font-semibold text-yellow-500  z-10 w-full flex"
+        >
+          <ArrowLeft className="ml-2" /> العودة لجميع الأدوات
+        </Link>
+      )
+    })()}
+    
+    {/* Reviews Section */}
+    <div className="mt-16 max-w-4xl mx-auto w-full">
+      <ProductReviews productId={product.id} />
+    </div>
+    
+    <div className="absolute top-36 md:top-0 left-[-10%] right-0 h-[400px] w-[300px]  md:h-[500px] md:w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,235,59,.15),rgba(255,255,255,0))]"></div>
+  </div>
+  )
+} 

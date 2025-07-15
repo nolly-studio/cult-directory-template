@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { PageHeader } from "@/components/cult/page-header"
 import { PageGrid } from "@/components/cult/page-grid"
 import { getTutorials, getTutorialFilters } from "../actions/tutorials"
+import { getCourses, getCourseCategories, getCourseDifficulties } from "../actions/courses"
+import { CourseCard } from "@/components/course-card"
 import { NavSidebar } from "@/components/nav"
 import { AdaptiveLayout } from "@/components/adaptive-layout"
 import { FadeIn } from "@/components/cult/fade-in"
@@ -21,10 +23,19 @@ export default async function TutorialsPage({
   }
 }) {
   const { category, difficulty } = searchParams
-  const [tutorials, filters] = await Promise.all([
+  const [tutorials, filters, courses, courseCategories, courseDifficulties] = await Promise.all([
     getTutorials(category, difficulty),
-    getTutorialFilters()
+    getTutorialFilters(),
+    getCourses(category, difficulty),
+    getCourseCategories(),
+    getCourseDifficulties()
   ])
+
+  // Combine filters for sidebar
+  const combinedFilters = {
+    categories: [...new Set([...filters.categories, ...courseCategories])],
+    difficulties: [...new Set([...filters.difficulties, ...courseDifficulties])]
+  }
 
   const getDurationFromContent = (content: string) => {
     // Better Arabic word counting - handle both Arabic and English content
@@ -58,8 +69,8 @@ export default async function TutorialsPage({
   return (
     <>
       <NavSidebar
-        categories={filters.categories}
-        labels={filters.difficulties}
+        categories={combinedFilters.categories}
+        labels={combinedFilters.difficulties}
         tags={[]}
       />
       
@@ -68,15 +79,43 @@ export default async function TutorialsPage({
           <FadeIn>
             <PageHeader
               title="مركز التعلم"
-              description="دروس تعليمية شاملة لتعلم استخدام أدوات الذكاء الاصطناعي بالعربية"
+              description="دورات وتعليمية شاملة لتعلم استخدام أدوات الذكاء الاصطناعي بالعربية"
               icon={BookOpen}
               backHref="/"
               stats={[
-                { label: "دروس متاحة", value: tutorials.length },
-                { label: "مستويات مختلفة", value: "3" },
+                { label: "دورات متاحة", value: courses.length },
+                { label: "دروس تعليمية", value: tutorials.length },
                 { label: "باللغة العربية", value: "100%" }
               ]}
             />
+
+            {/* Courses Section */}
+            {courses.length > 0 && (
+              <div className="mb-12">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold">الدورات المتاحة</h2>
+                  <Badge variant="outline">{courses.length} دورة</Badge>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                  {courses.map((course) => (
+                    <CourseCard 
+                      key={course.id} 
+                      course={course}
+                      variant="default"
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Tutorials Section */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold">الدروس التعليمية</h2>
+                <Badge variant="outline">{tutorials.length} درس</Badge>
+              </div>
+            </div>
 
             <PageGrid columns="3" className="mb-12">
         {tutorials.map((tutorial) => (

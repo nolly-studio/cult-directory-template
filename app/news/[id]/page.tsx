@@ -12,6 +12,65 @@ import { MarkdownRenderer } from "@/components/markdown-renderer"
 
 export const dynamic = "force-dynamic"
 
+// Generate structured data for news article
+function generateNewsArticleJsonLd(article: any) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: article.title_ar,
+    description: article.summary_ar || article.summary || (article.content_ar || '').substring(0, 200),
+    image: article.image_url,
+    author: {
+      "@type": "Person",
+      name: article.author || "العربي للذكاء الاصطناعي"
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "العربي للذكاء الاصطناعي",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://arabie.ai/logo.png"
+      }
+    },
+    datePublished: article.published_at,
+    dateModified: article.updated_at || article.published_at,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://arabie.ai/news/${article.id}`
+    },
+    inLanguage: "ar",
+    articleSection: article.category,
+    keywords: `${article.category}, أخبار الذكاء الاصطناعي, AI news Arabic, تحديثات تقنية`,
+    about: {
+      "@type": "Thing",
+      name: "الذكاء الاصطناعي"
+    },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "الرئيسية",
+          item: "https://arabie.ai"
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "الأخبار",
+          item: "https://arabie.ai/news"
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: article.title_ar,
+          item: `https://arabie.ai/news/${article.id}`
+        }
+      ]
+    }
+  }
+}
+
 export async function generateMetadata({ 
   params 
 }: { 
@@ -31,7 +90,7 @@ export async function generateMetadata({
   return {
     title: `${article.title_ar} - أخبار العربي للذكاء الاصطناعي`,
     description: description || `اقرأ ${article.title_ar} - آخر الأخبار والتحديثات في عالم الذكاء الاصطناعي`,
-    keywords: `${article.category}, أخبار الذكاء الاصطناعي, AI news Arabic, تحديثات`,
+    keywords: `${article.category}, أخبار الذكاء الاصطناعي, AI news Arabic, تحديثات, أخبار تقنية عربية, تطورات AI`,
     openGraph: {
       title: article.title_ar,
       description: description,
@@ -41,12 +100,18 @@ export async function generateMetadata({
       authors: article.author ? [article.author] : ['العربي للذكاء الاصطناعي'],
       section: article.category,
       images: article.image_url ? [article.image_url] : undefined,
+      url: `https://arabie.ai/news/${article.id}`,
+      siteName: 'العربي للذكاء الاصطناعي',
+      locale: 'ar_SA',
     },
     twitter: {
       card: 'summary_large_image',
       title: article.title_ar,
       description: description,
       images: article.image_url ? [article.image_url] : undefined,
+    },
+    alternates: {
+      canonical: `https://arabie.ai/news/${article.id}`,
     }
   }
 }
@@ -55,6 +120,35 @@ interface NewsPageProps {
   params: {
     id: string
   }
+}
+
+// Helper functions
+const getReadingTime = (content: string | null | undefined) => {
+  if (!content) return '2 دقائق'
+  const wordCount = content.split(' ').length
+  const minutes = Math.ceil(wordCount / 200)
+  return `${minutes} دقائق قراءة`
+}
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('ar-SA', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+const formatRelativeDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('ar-SA', {
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
+const getContent = (article: any) => {
+  return article.content_ar || article.content_en || ''
 }
 
 export default async function NewsPage({ params }: NewsPageProps) {
@@ -70,37 +164,15 @@ export default async function NewsPage({ params }: NewsPageProps) {
   // Get latest news for sidebar
   const latestNews = await getLatestNews(5)
   
-  const getReadingTime = (content: string | null | undefined) => {
-    if (!content) return '2 دقائق'
-    const wordCount = content.split(' ').length
-    const minutes = Math.ceil(wordCount / 200)
-    return `${minutes} دقائق قراءة`
-  }
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ar-SA', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
-
-  const formatRelativeDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ar-SA', {
-      month: 'long',
-      day: 'numeric'
-    })
-  }
-
-  const getContent = (article: any) => {
-    return article.content_ar || article.content_en || ''
-  }
-
   const articleContent = getContent(article)
 
-  return (
+  return <div>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(generateNewsArticleJsonLd(article)),
+      }}
+    />
     <div className="min-h-screen bg-background">
       {/* Navigation Bar */}
       <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
@@ -303,5 +375,5 @@ export default async function NewsPage({ params }: NewsPageProps) {
         </div>
       </div>
     </div>
-  )
+  </div>
 } 

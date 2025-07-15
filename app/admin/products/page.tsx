@@ -169,7 +169,7 @@ export default async function ProductsManagement({
             <Eye className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalViews.toLocaleString('ar')}</div>
+            <div className="text-2xl font-bold">{stats.totalViews.toLocaleString()}</div>
           </CardContent>
         </Card>
       </div>

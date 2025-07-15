@@ -96,6 +96,67 @@ export async function getProductById(id?: string) {
   return data
 }
 
+export async function getProductBySlug(slug?: string) {
+  const supabase = createClient()
+
+  if (!slug) return []
+
+  // Convert slug back to codename - handle various formats
+  let codename = slug
+  
+  // Handle common slug patterns
+  if (slug === 'character-ai') {
+    codename = 'Character.AI'
+  } else {
+    // Convert kebab-case back to proper format
+    codename = slug
+      .split('-')
+      .map(word => {
+        // Special cases for known patterns
+        if (word.toLowerCase() === 'ai') return 'AI'
+        if (word.toLowerCase() === 'gpt') return 'GPT'
+        return word.charAt(0).toUpperCase() + word.slice(1)
+      })
+      .join('.')
+  }
+
+  // First try exact match
+  let { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("codename", codename)
+  
+  // If not found, try case-insensitive search
+  if (!data || data.length === 0) {
+    const { data: caseInsensitiveData, error: caseError } = await supabase
+      .from("products")
+      .select("*")
+      .ilike("codename", codename)
+    
+    data = caseInsensitiveData
+    error = caseError
+  }
+
+  // If still not found, try original slug as-is
+  if (!data || data.length === 0) {
+    const { data: originalData, error: originalError } = await supabase
+      .from("products")
+      .select("*")
+      .eq("codename", slug)
+    
+    data = originalData
+    error = originalError
+  }
+  
+  if (error) {
+    console.error("Error fetching product by slug:", error)
+    return []
+  }
+
+  return data || []
+}
+
+
 export async function incrementClickCount(id: string) {
   const supabase = createClient()
 
@@ -110,4 +171,16 @@ export async function incrementClickCount(id: string) {
   }
 
   revalidatePath("/products")
+}
+
+export async function incrementProductViews(id: string): Promise<void> {
+  const supabase = createClient()
+
+  const { error } = await supabase.rpc('increment_product_view_count', {
+    product_id: id
+  })
+
+  if (error) {
+    console.error('Error incrementing product view count:', error)
+  }
 }

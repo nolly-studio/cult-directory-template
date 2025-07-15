@@ -1,6 +1,6 @@
 import { Suspense } from "react"
 import Link from "next/link"
-import { Search, Package, Newspaper, BookOpen, Calendar, Eye } from "lucide-react"
+import { Search, Package, Newspaper, BookOpen, Calendar, Eye, PenTool } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -12,20 +12,22 @@ import { PageLoading } from "@/components/ui/loading"
 import { getProducts } from "../actions/product"
 import { getNews } from "../actions/news"
 import { getTutorials } from "../actions/tutorials"
+import { searchBlogArticles } from "../actions/blog"
 import { getCachedFilters } from "../actions/cached_actions"
 
 export const dynamic = "force-dynamic"
 
 async function searchContent(query: string) {
   if (!query) {
-    return { products: [], news: [], tutorials: [] }
+    return { products: [], news: [], tutorials: [], blog: [] }
   }
 
   try {
-    const [products, news, tutorials] = await Promise.all([
+    const [products, news, tutorials, blog] = await Promise.all([
       getProducts(query),
       getNews(),
-      getTutorials()
+      getTutorials(),
+      searchBlogArticles(query, undefined, 6)
     ])
 
     // Filter news and tutorials by search query
@@ -46,11 +48,12 @@ async function searchContent(query: string) {
     return {
       products: products || [],
       news: filteredNews,
-      tutorials: filteredTutorials
+      tutorials: filteredTutorials,
+      blog: blog || []
     }
   } catch (error) {
     console.error('Search error:', error)
-    return { products: [], news: [], tutorials: [] }
+    return { products: [], news: [], tutorials: [], blog: [] }
   }
 }
 
@@ -60,7 +63,8 @@ async function SearchResults({ query }: { query: string }) {
 
   const totalResults = searchResults.products.length + 
                       searchResults.news.length + 
-                      searchResults.tutorials.length
+                      searchResults.tutorials.length + 
+                      searchResults.blog.length
 
   return (
     <>
@@ -133,7 +137,7 @@ async function SearchResults({ query }: { query: string }) {
                         <div className="flex items-center justify-between">
                           <Badge variant="outline">{product.categories}</Badge>
                           <Link
-                            href={`/products/${product.id}`}
+                            href={`/tools/${product.codename.toLowerCase().replace(/\./g, '-').replace(/\s+/g, '-')}`}
                             className="text-primary hover:underline text-sm"
                           >
                             عرض التفاصيل ←
@@ -146,7 +150,7 @@ async function SearchResults({ query }: { query: string }) {
 
                 {searchResults.products.length > 6 && (
                   <div className="text-center">
-                    <Link href={`/products?search=${encodeURIComponent(query)}`}>
+                    <Link href={`/tools?search=${encodeURIComponent(query)}`}>
                       <Badge variant="secondary" className="cursor-pointer hover:bg-secondary/80">
                         عرض جميع النتائج ({searchResults.products.length})
                       </Badge>
@@ -250,6 +254,61 @@ async function SearchResults({ query }: { query: string }) {
                     <Link href="/tutorials">
                       <Badge variant="secondary" className="cursor-pointer hover:bg-secondary/80">
                         عرض جميع الدروس
+                      </Badge>
+                    </Link>
+                  </div>
+                )}
+              </section>
+            )}
+
+            {/* Blog Results */}
+            {searchResults.blog.length > 0 && (
+              <section className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <PenTool className="h-6 w-6 text-primary" />
+                  <h2 className="text-2xl font-bold">المدونة ({searchResults.blog.length})</h2>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {searchResults.blog.slice(0, 4).map((article) => (
+                    <Card key={article.id} className="hover:shadow-lg transition-shadow">
+                      <CardHeader>
+                        <CardTitle className="text-lg leading-tight">
+                          {article.title_ar}
+                        </CardTitle>
+                        <CardDescription>
+                          {article.excerpt_ar?.substring(0, 150) || article.content_ar?.substring(0, 150)}...
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <Badge variant="outline">{article.category}</Badge>
+                            {article.difficulty_level && (
+                              <Badge variant="secondary">{article.difficulty_level}</Badge>
+                            )}
+                            <div className="flex items-center gap-1">
+                              <Eye className="h-3 w-3" />
+                              {article.view_count || 0}
+                            </div>
+                          </div>
+                          <Link
+                            href={`/blog/${article.slug}`}
+                            className="text-primary hover:underline text-sm"
+                          >
+                            قراءة المقال ←
+                          </Link>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                {searchResults.blog.length > 4 && (
+                  <div className="text-center">
+                    <Link href="/blog">
+                      <Badge variant="secondary" className="cursor-pointer hover:bg-secondary/80">
+                        عرض جميع مقالات المدونة
                       </Badge>
                     </Link>
                   </div>

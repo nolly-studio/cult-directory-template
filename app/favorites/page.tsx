@@ -100,7 +100,7 @@ async function FavoritesContent() {
                 )}
               </div>
               <Button variant="outline" size="sm" asChild>
-                <Link href={`/products/${product.slug}`}>
+                <Link href={`/tools/${product.slug}`}>
                   عرض التفاصيل
                 </Link>
               </Button>

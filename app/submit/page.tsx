@@ -34,18 +34,18 @@ export default async function ProtectedSubmitPage(): Promise<ReactElement> {
         <div className="flex flex-col md:flex-row items-start justify-center py-12 px-4 md:px-0">
           <div className="flex flex-col items-start justify-center gap-2 md:pl-48">
             <div className="flex items-center space-x-2">
-              <h1 className="text-5xl font-black ">_submit</h1>
+              <h1 className="text-5xl font-black text-right">اقترح أداة</h1>
             </div>
             <div className="flex flex-col items-start mt-4">
               <div className="flex items-center mt-2">
-                <span className="mx-2 text-xl font-bold">
-                  Submit your tool for approval
+                <span className="mx-2 text-xl font-bold text-right">
+                  ساعدنا في بناء أكبر دليل عربي للذكاء الاصطناعي
                 </span>
               </div>
-              <div className="flex  items-center gap-1 pl-3">
-                <p className="mt-2 text-left text-gray-600  text-pretty">
-                  Submit products. Build backlinks. <br />
-                  Grow seo reach. Get paid.
+              <div className="flex items-center gap-1 pl-3">
+                <p className="mt-2 text-right text-gray-600 text-pretty">
+                  اقترح أدوات الذكاء الاصطناعي المفضلة لديك <br />
+                  واحصل على رابط لموقعك ووصول لأكثر من 10,000 مستخدم
                 </p>
               </div>
             </div>
@@ -70,7 +70,7 @@ export default async function ProtectedSubmitPage(): Promise<ReactElement> {
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return redirect("/login")
+      return redirect("/login?redirect=/submit")
     }
   } catch (error) {
     console.error('Error fetching data:', error)
@@ -88,18 +88,18 @@ export default async function ProtectedSubmitPage(): Promise<ReactElement> {
       <AdaptiveLayout className="flex flex-col md:flex-row items-start justify-center py-12 px-4 md:px-0">
         <div className="flex flex-col items-start justify-center gap-2 md:pl-48">
           <div className="flex items-center space-x-2">
-            <h1 className="text-5xl font-black ">_submit</h1>
+            <h1 className="text-5xl font-black text-right">اقترح أداة</h1>
           </div>
           <div className="flex flex-col items-start mt-4">
             <div className="flex items-center mt-2">
-              <span className="mx-2 text-xl font-bold">
-                Submit your tool for approval
+              <span className="mx-2 text-xl font-bold text-right">
+                ساعدنا في بناء أكبر دليل عربي للذكاء الاصطناعي
               </span>
             </div>
-            <div className="flex  items-center gap-1 pl-3">
-              <p className="mt-2 text-left text-gray-600  text-pretty">
-                Submit products. Build backlinks. <br />
-                Grow seo reach. Get paid.
+            <div className="flex items-center gap-1 pl-3">
+              <p className="mt-2 text-right text-gray-600 text-pretty">
+                اقترح أدوات الذكاء الاصطناعي المفضلة لديك <br />
+                واحصل على رابط لموقعك ووصول لأكثر من 10,000 مستخدم
               </p>
             </div>
           </div>

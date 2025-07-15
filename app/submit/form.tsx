@@ -120,13 +120,16 @@ export const SubmitTool = () => {
             }
             setLoading(false)
             await formAction(formData)
-            router.push("/")
+            router.push("/submit/success")
           })(evt)
         }}
       >
         <GradientHeading size="xs">
-          لنبدأ بمعلوماتك الشخصية
+          معلوماتك الشخصية
         </GradientHeading>
+        <p className="text-sm text-muted-foreground text-right">
+          هذه المعلومات ستساعدنا في التواصل معك بخصوص الأداة المقترحة
+        </p>
         <div className="flex flex-wrap gap-1 md:gap-2">
           <FormField
             control={form.control}
@@ -183,8 +186,11 @@ export const SubmitTool = () => {
         </div>
 
         <GradientHeading size="xs">
-          أخبرنا المزيد عن الأداة
+          معلومات الأداة
         </GradientHeading>
+        <p className="text-sm text-muted-foreground text-right">
+          كلما كانت المعلومات أكثر تفصيلاً، كان من الأسهل على المستخدمين اكتشاف الأداة والاستفادة منها
+        </p>
         <FormField
           control={form.control}
           name="codename"
@@ -278,9 +284,16 @@ export const SubmitTool = () => {
         />
 
         {isValid && (
-          <StyledButton disabled={loading} type="submit">
-إرسال
-          </StyledButton>
+          <div className="space-y-4">
+            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+              <p className="text-sm text-green-800 dark:text-green-300 text-right">
+                ✅ بإرسال هذا النموذج، ستحصل على رابط مجاني لموقعك وعرض أداتك لأكثر من 10,000 مستخدم عربي
+              </p>
+            </div>
+            <StyledButton disabled={loading} type="submit" className="w-full">
+              {loading ? "جاري الإرسال..." : "اقترح الأداة"}
+            </StyledButton>
+          </div>
         )}
       </form>
     </Form>

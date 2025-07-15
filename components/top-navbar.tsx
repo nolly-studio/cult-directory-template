@@ -15,7 +15,7 @@ import {
   Plus,
   PanelRightOpen,
   PanelRightClose,
-  CreditCard
+  PenTool
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -36,6 +36,11 @@ const navigation = [
     icon: Package
   },
   {
+    name: "المدونة",
+    href: "/blog",
+    icon: PenTool
+  },
+  {
     name: "التعلم",
     href: "/tutorials", 
     icon: BookOpen
@@ -44,11 +49,6 @@ const navigation = [
     name: "الأخبار",
     href: "/news",
     icon: Newspaper
-  },
-  {
-    name: "الأسعار",
-    href: "/pricing",
-    icon: CreditCard
   },
   {
     name: "أضف أداة",
@@ -147,6 +147,16 @@ export function TopNavbar() {
             variant="ghost" 
             size="icon" 
             className="h-8 w-8 hover:bg-accent transition-all duration-150 ease-in-out"
+            onClick={() => {
+              if (typeof document !== 'undefined') {
+                const searchInput = document.getElementById('search') as HTMLInputElement;
+                if (searchInput) {
+                  searchInput.focus();
+                } else if (typeof window !== 'undefined') {
+                  window.location.href = '/search';
+                }
+              }
+            }}
           >
             <Search className="h-4 w-4" />
             <span className="sr-only">بحث</span>

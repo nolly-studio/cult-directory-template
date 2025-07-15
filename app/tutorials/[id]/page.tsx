@@ -14,6 +14,68 @@ import { ReadingProgress } from "@/components/reading-progress"
 
 export const dynamic = "force-dynamic"
 
+// Generate structured data for tutorial
+function generateTutorialJsonLd(tutorial: any) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LearningResource",
+    name: tutorial.title_ar,
+    description: tutorial.content ? tutorial.content.substring(0, 200) : '',
+    url: `https://arabie.ai/tutorials/${tutorial.id}`,
+    inLanguage: "ar",
+    author: {
+      "@type": "Organization",
+      name: "العربي للذكاء الاصطناعي"
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "العربي للذكاء الاصطناعي",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://arabie.ai/logo.png"
+      }
+    },
+    datePublished: tutorial.created_at,
+    dateModified: tutorial.updated_at || tutorial.created_at,
+    educationalLevel: tutorial.difficulty || 'مبتدئ',
+    learningResourceType: "Tutorial",
+    about: {
+      "@type": "Thing",
+      name: "الذكاء الاصطناعي"
+    },
+    teaches: tutorial.category,
+    timeRequired: `PT${Math.ceil((tutorial.content?.split(' ').length || 0) / 180)}M`,
+    interactionStatistic: {
+      "@type": "InteractionCounter",
+      interactionType: "https://schema.org/ReadAction",
+      userInteractionCount: tutorial.view_count || 0
+    },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "الرئيسية",
+          item: "https://arabie.ai"
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "الدروس",
+          item: "https://arabie.ai/tutorials"
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: tutorial.title_ar,
+          item: `https://arabie.ai/tutorials/${tutorial.id}`
+        }
+      ]
+    }
+  }
+}
+
 export async function generateMetadata({ 
   params 
 }: { 
@@ -33,7 +95,7 @@ export async function generateMetadata({
   return {
     title: `${tutorial.title_ar} - دروس العربي للذكاء الاصطناعي`,
     description: excerpt || `تعلم ${tutorial.title_ar} - درس تعليمي شامل باللغة العربية`,
-    keywords: `${tutorial.category}, ${tutorial.difficulty}, ذكاء اصطناعي, تعلم, دروس عربية`,
+    keywords: `${tutorial.category}, ${tutorial.difficulty}, ذكاء اصطناعي, تعلم, دروس عربية, تعليم AI, شروحات بالعربي`,
     openGraph: {
       title: tutorial.title_ar,
       description: excerpt,
@@ -42,11 +104,17 @@ export async function generateMetadata({
       modifiedTime: tutorial.updated_at || undefined,
       authors: ['العربي للذكاء الاصطناعي'],
       section: tutorial.category,
+      url: `https://arabie.ai/tutorials/${tutorial.id}`,
+      siteName: 'العربي للذكاء الاصطناعي',
+      locale: 'ar_SA',
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title: tutorial.title_ar,
       description: excerpt,
+    },
+    alternates: {
+      canonical: `https://arabie.ai/tutorials/${tutorial.id}`,
     }
   }
 }
@@ -55,6 +123,30 @@ interface TutorialPageProps {
   params: {
     id: string
   }
+}
+
+// Helper functions
+const getDurationFromContent = (content: string | null | undefined) => {
+  if (!content) return '1 دقيقة'
+  // Better Arabic word counting - handle both Arabic and English content
+  const arabicWords = content.match(/[\u0600-\u06FF]+/g) || []
+  const englishWords = content.match(/[a-zA-Z]+/g) || []
+  const totalWords = arabicWords.length + englishWords.length
+  // Arabic reading speed is typically 180-200 wpm
+  const minutes = Math.ceil(totalWords / 180)
+  return `${Math.max(1, minutes)} دقيقة`
+}
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('ar-SA', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
+const getContent = (tutorial: any) => {
+  return tutorial.content_ar || tutorial.content || ''
 }
 
 export default async function TutorialPage({ params }: TutorialPageProps) {
@@ -70,35 +162,18 @@ export default async function TutorialPage({ params }: TutorialPageProps) {
   // Get featured tutorials for sidebar
   const featuredTutorials = await getFeaturedTutorials()
   
-  const getDurationFromContent = (content: string | null | undefined) => {
-    if (!content) return '1 دقيقة'
-    // Better Arabic word counting - handle both Arabic and English content
-    const arabicWords = content.match(/[\u0600-\u06FF]+/g) || []
-    const englishWords = content.match(/[a-zA-Z]+/g) || []
-    const totalWords = arabicWords.length + englishWords.length
-    // Arabic reading speed is typically 180-200 wpm
-    const minutes = Math.ceil(totalWords / 180)
-    return `${Math.max(1, minutes)} دقيقة`
-  }
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ar-SA', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
-  }
-
-  const getContent = (tutorial: any) => {
-    return tutorial.content_ar || tutorial.content || ''
-  }
-
   const tutorialContent = getContent(tutorial)
 
-  return (
+  return <div>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(generateTutorialJsonLd(tutorial)),
+      }}
+    />
     <div className="min-h-screen bg-background">
-      <ReadingProgress />
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <ReadingProgress />
+        <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Back Navigation */}
         <div className="mb-6">
           <Button variant="ghost" asChild className="text-right">
@@ -277,5 +352,5 @@ export default async function TutorialPage({ params }: TutorialPageProps) {
         </div>
       </div>
     </div>
-  )
+  </div>
 } 

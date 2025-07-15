@@ -17,19 +17,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ResetPassword } from "./reset-password"
 import { SubmitButton } from "./submit-button"
 
-export function LoginForm() {
+export function LoginForm({ redirectTo }: { redirectTo?: string }) {
   const signIn = async (formData: FormData) => {
     "use server"
 
     const email = formData.get("email") as string
     const password = formData.get("password") as string
+    const redirectTo = formData.get("redirect") as string || "/submit"
     const supabase = createClient()
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
     if (error) return redirect("/login?message=Could not authenticate user")
-    return redirect("/submit")
+    return redirect(redirectTo)
   }
 
   const signUp = async (formData: FormData) => {
@@ -38,6 +39,7 @@ export function LoginForm() {
     const origin = headers().get("origin")
     const email = formData.get("email") as string
     const password = formData.get("password") as string
+    const redirectTo = formData.get("redirect") as string || "/submit"
     const supabase = createClient()
     const { error } = await supabase.auth.signUp({
       email,
@@ -52,7 +54,7 @@ export function LoginForm() {
       password,
     })
     if (err) return redirect("/login?message=Could not authenticate user")
-    return redirect("/submit")
+    return redirect(redirectTo)
   }
 
   const handleResetPassword = async (formData: FormData) => {
@@ -85,6 +87,7 @@ export function LoginForm() {
             </CardHeader>
             <CardContent>
               <form className="grid gap-4">
+                {redirectTo && <input type="hidden" name="redirect" value={redirectTo} />}
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
                   <Input name="email" placeholder="you@example.com" required />
@@ -124,6 +127,7 @@ export function LoginForm() {
             <CardContent>
               {/* <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"> */}
               <form className="grid gap-4">
+                {redirectTo && <input type="hidden" name="redirect" value={redirectTo} />}
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
                   <Input name="email" placeholder="you@example.com" required />

@@ -6,6 +6,7 @@ INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_typ
 VALUES 
   ('news-images', 'news-images', true, 5242880, '{"image/jpeg","image/png","image/webp","image/gif"}'),
   ('tutorial-images', 'tutorial-images', true, 5242880, '{"image/jpeg","image/png","image/webp","image/gif"}'),
+  ('blog-images', 'blog-images', true, 5242880, '{"image/jpeg","image/png","image/webp","image/gif"}'),
   ('site-assets', 'site-assets', true, 10485760, '{"image/jpeg","image/png","image/webp","image/gif","image/svg+xml"}')
 ON CONFLICT (id) DO NOTHING;
 
@@ -61,7 +62,33 @@ USING (
   AND auth.uid()::text = (storage.foldername(name))[1]
 );
 
--- 4. Create storage policies for site-assets bucket
+-- 4. Create storage policies for blog-images bucket
+CREATE POLICY "Blog images are publicly accessible"
+ON storage.objects FOR SELECT
+USING (bucket_id = 'blog-images');
+
+CREATE POLICY "Authenticated users can upload blog images"
+ON storage.objects FOR INSERT
+WITH CHECK (
+  bucket_id = 'blog-images' 
+  AND auth.role() = 'authenticated'
+);
+
+CREATE POLICY "Users can update their own blog images"
+ON storage.objects FOR UPDATE
+USING (
+  bucket_id = 'blog-images' 
+  AND auth.uid()::text = (storage.foldername(name))[1]
+);
+
+CREATE POLICY "Users can delete their own blog images"
+ON storage.objects FOR DELETE
+USING (
+  bucket_id = 'blog-images' 
+  AND auth.uid()::text = (storage.foldername(name))[1]
+);
+
+-- 5. Create storage policies for site-assets bucket
 CREATE POLICY "Site assets are publicly accessible"
 ON storage.objects FOR SELECT
 USING (bucket_id = 'site-assets');
@@ -100,7 +127,7 @@ USING (
   )
 );
 
--- 5. Add additional fields to ai_news table for better CMS support
+-- 6. Add additional fields to ai_news table for better CMS support
 ALTER TABLE public.ai_news 
 ADD COLUMN IF NOT EXISTS is_published BOOLEAN DEFAULT false,
 ADD COLUMN IF NOT EXISTS is_featured BOOLEAN DEFAULT false,
@@ -110,7 +137,7 @@ ADD COLUMN IF NOT EXISTS slug TEXT,
 ADD COLUMN IF NOT EXISTS meta_description TEXT,
 ADD COLUMN IF NOT EXISTS featured_image_url TEXT;
 
--- 6. Add additional fields to tutorials table
+-- 7. Add additional fields to tutorials table
 ALTER TABLE public.tutorials
 ADD COLUMN IF NOT EXISTS is_published BOOLEAN DEFAULT true,
 ADD COLUMN IF NOT EXISTS featured_image_url TEXT,
@@ -118,7 +145,7 @@ ADD COLUMN IF NOT EXISTS estimated_reading_time INTEGER,
 ADD COLUMN IF NOT EXISTS prerequisite_tutorials TEXT[],
 ADD COLUMN IF NOT EXISTS learning_objectives TEXT[];
 
--- 7. Create site_settings table for global configuration
+-- 8. Create site_settings table for global configuration
 CREATE TABLE IF NOT EXISTS public.site_settings (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   key TEXT UNIQUE NOT NULL,
@@ -132,14 +159,14 @@ CREATE TABLE IF NOT EXISTS public.site_settings (
 INSERT INTO public.site_settings (key, value, description) VALUES
   ('site_name', '"العربي للذكاء الاصطناعي"', 'Site name'),
   ('site_description', '"اكتشف أفضل أدوات الذكاء الاصطناعي مع شروحات باللغة العربية"', 'Site description'),
-  ('contact_email', '"info@theaiarab.com"', 'Contact email'),
+  ('contact_email', '"info@arabie.ai"', 'Contact email'),
   ('social_links', '{"twitter": "", "linkedin": "", "github": ""}', 'Social media links'),
   ('homepage_featured_tools', '[]', 'Featured tools on homepage'),
   ('news_categories', '["أخبار عامة", "تحديثات", "تعليم", "أبحاث"]', 'News categories'),
   ('tutorial_categories', '["مبتدئ", "متوسط", "متقدم"]', 'Tutorial categories')
 ON CONFLICT (key) DO NOTHING;
 
--- 8. Create RLS policies for site_settings
+-- 9. Create RLS policies for site_settings
 ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Site settings are viewable by everyone"
@@ -156,7 +183,7 @@ USING (
   )
 );
 
--- 9. Create media_library table for centralized image management
+-- 10. Create media_library table for centralized image management
 CREATE TABLE IF NOT EXISTS public.media_library (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   filename TEXT NOT NULL,
@@ -201,7 +228,7 @@ USING (
   )
 );
 
--- 10. Create indexes for better performance
+-- 11. Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_media_library_bucket ON public.media_library(bucket_name);
 CREATE INDEX IF NOT EXISTS idx_media_library_tags ON public.media_library USING GIN(tags);
 CREATE INDEX IF NOT EXISTS idx_media_library_uploaded_by ON public.media_library(uploaded_by);
@@ -209,7 +236,7 @@ CREATE INDEX IF NOT EXISTS idx_ai_news_published ON public.ai_news(is_published,
 CREATE INDEX IF NOT EXISTS idx_ai_news_featured ON public.ai_news(is_featured);
 CREATE INDEX IF NOT EXISTS idx_tutorials_published ON public.tutorials(is_published);
 
--- 11. Update view count function for news
+-- 12. Update view count function for news
 CREATE OR REPLACE FUNCTION increment_news_view_count(news_id UUID)
 RETURNS void AS $$
 BEGIN
@@ -219,7 +246,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- 12. Update view count function for tutorials  
+-- 13. Update view count function for tutorials  
 CREATE OR REPLACE FUNCTION increment_tutorial_view_count(tutorial_id UUID)
 RETURNS void AS $$
 BEGIN

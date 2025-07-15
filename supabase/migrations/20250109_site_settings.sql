@@ -60,7 +60,7 @@ INSERT INTO site_settings (key, value, description, category) VALUES
     ('site_name_ar', '"ذا إيه آي عرب"', 'اسم الموقع بالعربية / Site name in Arabic', 'general'),
     ('site_description', '"Discover the best AI tools in Arabic"', 'وصف الموقع / Site description', 'general'),
     ('site_description_ar', '"اكتشف أفضل أدوات الذكاء الاصطناعي بالعربية"', 'وصف الموقع بالعربية / Site description in Arabic', 'general'),
-    ('contact_email', '"support@theaiarab.com"', 'البريد الإلكتروني للتواصل / Contact email', 'contact'),
+    ('contact_email', '"support@arabie.ai"', 'البريد الإلكتروني للتواصل / Contact email', 'contact'),
     ('social_twitter', '"@theaiarab"', 'حساب تويتر / Twitter handle', 'social'),
     ('social_linkedin', '"theaiarab"', 'حساب لينكد إن / LinkedIn handle', 'social'),
     ('analytics_enabled', 'true', 'تفعيل التحليلات / Enable analytics', 'features'),
@@ -73,7 +73,7 @@ INSERT INTO site_settings (key, value, description, category) VALUES
     ('smtp_host', '""', 'خادم SMTP / SMTP host', 'email'),
     ('smtp_port', '587', 'منفذ SMTP / SMTP port', 'email'),
     ('smtp_user', '""', 'مستخدم SMTP / SMTP user', 'email'),
-    ('smtp_from_email', '"noreply@theaiarab.com"', 'البريد المرسل / From email', 'email'),
+    ('smtp_from_email', '"noreply@arabie.ai"', 'البريد المرسل / From email', 'email'),
     ('smtp_from_name', '"TheAIArab"', 'اسم المرسل / From name', 'email')
 ON CONFLICT (key) DO NOTHING;
 

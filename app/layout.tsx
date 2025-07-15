@@ -32,7 +32,7 @@ export const metadata = {
     "@context": "http://schema.org",
     "@type": "WebSite",
     name: "العربي للذكاء الاصطناعي",
-    url: "https://www.theaiarab.com/",
+    url: "https://www.arabie.ai/",
     description:
       "المنصة العربية الشاملة لأدوات وموارد الذكاء الاصطناعي للمجتمع العربي.",
   },

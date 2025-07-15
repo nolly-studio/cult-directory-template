@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 // Import highlight.js theme
-import "highlight.js/styles/github-dark.css"
+import "highlight.js/styles/github.css"
 
 interface MarkdownRendererProps {
   content: string
@@ -28,9 +28,11 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
 
   const handleCopyCode = async (code: string) => {
     try {
-      await navigator.clipboard.writeText(code)
-      setCopiedCode(code)
-      setTimeout(() => setCopiedCode(null), 2000)
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        await navigator.clipboard.writeText(code)
+        setCopiedCode(code)
+        setTimeout(() => setCopiedCode(null), 2000)
+      }
     } catch (err) {
       console.error("Failed to copy code:", err)
     }

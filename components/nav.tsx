@@ -196,7 +196,7 @@ export function NavSidebar({
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="outline" className="sm:hidden bg-accent">
-                <PanelLeftIcon />
+                <PanelLeftIcon className="h-5 w-5" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
@@ -463,7 +463,7 @@ function ProductNav({
                     href={
                       pathname.includes("/tutorials") ? `/tutorials?category=${category}` :
                       pathname.includes("/news") ? `/news?category=${category}` :
-                      `/products?category=${category}`
+                      `/tools?category=${category}`
                     }
                     onClick={handleLinkClick}
                     className={cn(
@@ -495,7 +495,7 @@ function ProductNav({
               {tags?.map((tag: string, index: number) => (
                 <li key={`tag-${index}-${tag}`}>
                   <Link
-                    href={`/products?tag=${tag}`}
+                    href={`/tools?tag=${tag}`}
                     onClick={handleLinkClick}
                     className={cn(
                       "block text-xs px-2 py-1 rounded-md transition-colors leading-tight",
@@ -526,7 +526,7 @@ function ProductNav({
               {labels?.map((label: string, index: number) => (
                 <li key={`label-${index}-${label}`}>
                   <Link
-                    href={pathname.includes("/tutorials") ? `/tutorials?difficulty=${label}` : `/products?label=${label}`}
+                    href={pathname.includes("/tutorials") ? `/tutorials?difficulty=${label}` : `/tools?label=${label}`}
                     onClick={handleLinkClick}
                     className={cn(
                       "block text-xs px-2 py-1 rounded-md transition-colors leading-tight",

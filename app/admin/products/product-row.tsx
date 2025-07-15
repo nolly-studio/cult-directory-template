@@ -102,7 +102,7 @@ export function ProductRow({ product: initialProduct }: ProductRowProps) {
       </TableCell>
       
       <TableCell>
-        {new Date(product.created_at).toLocaleDateString('ar-SA')}
+        {new Date(product.created_at).toLocaleDateString('en-US')}
       </TableCell>
       
       <TableCell>

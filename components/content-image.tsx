@@ -1,12 +1,12 @@
 "use client"
 
-import { FileText, BookOpen, Camera } from "lucide-react"
+import { FileText, BookOpen, Camera, PenTool } from "lucide-react"
 import { ImageWithFallback } from "@/components/cult/fallback-image"
 import { cn } from "@/lib/utils"
 
 interface ContentImageProps {
   image_url?: string | null
-  content_type?: 'news' | 'tutorial' | 'general'
+  content_type?: 'news' | 'tutorial' | 'general' | 'blog'
   title: string
   className?: string
   aspectRatio?: 'square' | 'video' | 'wide' | 'auto'
@@ -30,7 +30,8 @@ const sizeClasses = {
 const contentTypeIcons = {
   news: FileText,
   tutorial: BookOpen,
-  general: Camera
+  general: Camera,
+  blog: PenTool
 }
 
 function getStorageBucketUrl(image_url: string, content_type: string): string {
@@ -43,7 +44,8 @@ function getStorageBucketUrl(image_url: string, content_type: string): string {
   const bucketMap = {
     news: 'news-images',
     tutorial: 'tutorial-images',
-    general: 'site-assets'
+    general: 'site-assets',
+    blog: 'blog-images'
   }
   
   const bucket = bucketMap[content_type as keyof typeof bucketMap] || 'site-assets'

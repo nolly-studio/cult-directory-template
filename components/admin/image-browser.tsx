@@ -145,8 +145,10 @@ export function ImageBrowser({
   }
 
   const copyToClipboard = (url: string) => {
-    navigator.clipboard.writeText(url)
-    toast.success('تم نسخ الرابط إلى الحافظة')
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(url)
+      toast.success('تم نسخ الرابط إلى الحافظة')
+    }
   }
 
   const bucketCounts = useMemo(() => {
