@@ -30,11 +30,10 @@ export function AdaptiveLayout({ children, className }: AdaptiveLayoutProps) {
     <div 
       className={cn(
         "transition-all duration-150 ease-in-out w-full",
-        shouldApplyMargin && isOpen ? "md:pr-48" : "md:pr-0",
         className
       )}
     >
-      <div className="w-full max-w-7xl mx-auto px-4">
+      <div className="w-full max-w-6xl mx-auto px-4">
         {children}
       </div>
     </div>

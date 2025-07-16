@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { TopNavbar } from "@/components/top-navbar"
 import { SmartBreadcrumb } from "@/components/smart-breadcrumb"
+import { Footer } from "@/components/footer"
 import { SidebarProvider } from "@/contexts/sidebar-context"
 import { GoogleAnalytics } from "@/components/analytics"
 import { Analytics } from "@vercel/analytics/next"
@@ -111,7 +112,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="arabic-font" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
@@ -119,9 +120,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <SidebarProvider>
               <TopNavbar />
               <SmartBreadcrumb />
-              <main className="bg-[#FAFAFA] dark:bg-background text-foreground w-full min-h-screen">
+              <main className="text-foreground w-full min-h-screen">
                 {children}
               </main>
+              <Footer />
             </SidebarProvider>
           </TooltipProvider>
           <Toaster richColors />

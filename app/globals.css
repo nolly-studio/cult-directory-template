@@ -7,34 +7,34 @@
 
 @layer base {
   :root {
-    /* Teal Network Theme - Inspired by arabie.ai brand */
-    --background: 42 55% 88%; /* Much more golden creamy background */
-    --foreground: 180 45% 20%; /* Dark teal for text */
+    /* Modern White + Teal Theme - Clean & Professional */
+    --background: 0 0% 100%; /* Pure white background */
+    --foreground: 222 84% 5%; /* Dark charcoal text (#111827) */
 
     --card: 0 0% 100%; /* Clean white cards */
-    --card-foreground: 180 45% 20%;
+    --card-foreground: 222 84% 5%;
 
     --popover: 0 0% 100%; /* Clean white popovers */
-    --popover-foreground: 180 45% 20%;
+    --popover-foreground: 222 84% 5%;
 
-    --primary: 180 35% 45%; /* Main teal color */
-    --primary-foreground: 0 0% 98%; /* Clean white text on teal */
+    --primary: 166 100% 69%; /* Cyber Teal (#64FFDA) */
+    --primary-foreground: 222 84% 5%; /* Dark text on teal */
 
-    --secondary: 0 0% 96%; /* Clean light gray/white for buttons */
-    --secondary-foreground: 180 45% 25%;
+    --secondary: 210 20% 95%; /* Light neutral grey (#E5E7EB) */
+    --secondary-foreground: 222 84% 5%;
 
-    --muted: 0 0% 96%; /* Clean light gray/white */
-    --muted-foreground: 180 25% 35%;
+    --muted: 210 20% 95%; /* Light neutral grey */
+    --muted-foreground: 220 13% 46%; /* Medium grey for muted text */
 
-    --accent: 0 0% 98%; /* Clean white accent */
-    --accent-foreground: 180 45% 25%;
+    --accent: 210 20% 95%; /* Light neutral grey accent */
+    --accent-foreground: 222 84% 5%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 180 20% 80%; /* Teal border */
-    --input: 180 15% 85%; /* Light teal input */
-    --ring: 180 35% 45%; /* Teal focus ring */
+    --border: 210 20% 90%; /* Light neutral border */
+    --input: 210 20% 95%; /* Light neutral input */
+    --ring: 166 100% 69%; /* Teal focus ring */
 
     --radius: 0.5rem;
   }
@@ -76,7 +76,10 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#FAFAFA] dark:bg-background text-foreground;
+    @apply text-foreground;
+    background: radial-gradient(ellipse 100% 100% at 50% 0%, hsl(180 25% 15%) 0%, hsl(180 30% 8%) 50%, hsl(180 35% 4%) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
 
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: transparent;
@@ -100,6 +103,50 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+  }
+  
+  .glass {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+  
+  .glass-hover {
+    transition: all 0.3s ease;
+  }
+  
+  .glass-hover:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+  }
+  
+  .glow-teal {
+    box-shadow: 0 0 25px 3px rgba(100, 255, 218, 0.5), 0 0 50px 6px rgba(100, 255, 218, 0.2);
+  }
+  
+  .glow-teal-hover {
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .glow-teal-hover:hover {
+    box-shadow: 0 0 35px 5px rgba(100, 255, 218, 0.7), 0 0 70px 10px rgba(100, 255, 218, 0.3);
+  }
+  
+  /* Fallback for browsers that don't support backdrop-filter */
+  @supports not (backdrop-filter: blur(16px)) {
+    .glass {
+      background: rgba(20, 30, 40, 0.85);
+    }
+  }
+  
+  /* Ensure glass effects work on webkit browsers */
+  @supports (-webkit-backdrop-filter: blur(16px)) {
+    .glass {
+      -webkit-backdrop-filter: blur(16px);
+    }
   }
 }
 

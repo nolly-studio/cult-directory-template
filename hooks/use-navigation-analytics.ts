@@ -35,7 +35,8 @@ export function useNavigationAnalytics() {
         // Send to analytics service
         try {
           // Example: Google Analytics 4
-          if (typeof gtag !== 'undefined') {
+          if (typeof window !== 'undefined' && 'gtag' in window) {
+            const gtag = (window as any).gtag
             gtag('event', 'page_view', {
               page_title: document.title,
               page_location: window.location.href,

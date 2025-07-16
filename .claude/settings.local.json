@@ -9,7 +9,8 @@
       "Bash(rm:*)",
       "Bash(taskkill:*)",
       "Bash(pnpm store prune:*)",
-      "Bash(rd:*)"
+      "Bash(rd:*)",
+      "Bash(pnpm install:*)"
     ],
     "deny": []
   }

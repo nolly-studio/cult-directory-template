@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { 
@@ -23,43 +23,44 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { ModeToggle } from "@/app/providers"
 import { useSidebar } from "@/contexts/sidebar-context"
+import { SearchModal } from "@/components/search-modal"
 
 const navigation = [
   {
-    name: "الرئيسية",
-    href: "/",
-    icon: Home
+    name: "The Launchpad | منصة الإطلاق",
+    href: "/tutorials", 
+    icon: BookOpen,
+    isPrimary: true
   },
   {
-    name: "الأدوات", 
+    name: "الترسانة",
     href: "/tools",
     icon: Package
   },
   {
-    name: "المدونة",
+    name: "المقالات",
     href: "/blog",
     icon: PenTool
-  },
-  {
-    name: "التعلم",
-    href: "/tutorials", 
-    icon: BookOpen
-  },
-  {
-    name: "الأخبار",
-    href: "/news",
-    icon: Newspaper
-  },
-  {
-    name: "أضف أداة",
-    href: "/submit",
-    icon: Plus
   }
 ]
 
 export function TopNavbar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
+  
+  // Keyboard shortcut for search (Ctrl+K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault()
+        setIsSearchModalOpen(true)
+      }
+    }
+    
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
   
   // Don't show navbar on admin pages
   if (pathname.startsWith('/admin')) {
@@ -106,7 +107,11 @@ export function TopNavbar() {
           href="/" 
           className="flex items-center gap-2 font-bold text-sm sm:text-lg hover:text-primary transition-all duration-150 ease-in-out transform hover:scale-105"
         >
-          <Brain className="h-5 w-5 sm:h-6 sm:w-6 text-primary animate-pulse" />
+          <img 
+            src="/arabieailogo.png" 
+            alt="العربي للذكاء الاصطناعي" 
+            className="h-6 w-6 sm:h-8 sm:w-8 object-contain rounded-sm"
+          />
           <span className="hidden sm:inline">العربي للذكاء الاصطناعي</span>
           <span className="sm:hidden">العربي AI</span>
         </Link>
@@ -123,10 +128,14 @@ export function TopNavbar() {
                 href={item.href}
                 className={cn(
                   "text-xs sm:text-sm font-medium relative px-3 py-2 rounded-md transition-all duration-150 ease-in-out",
-                  "hover:bg-accent/50 hover:text-primary transform hover:scale-105",
+                  item.isPrimary 
+                    ? "text-primary font-bold hover:bg-primary/10 transform hover:scale-105"
+                    : "hover:bg-accent/50 hover:text-primary transform hover:scale-105",
                   isActive 
                     ? "text-primary bg-accent/30" 
-                    : "text-muted-foreground"
+                    : item.isPrimary 
+                      ? "text-primary"
+                      : "text-muted-foreground"
                 )}
               >
                 {item.name}
@@ -141,22 +150,13 @@ export function TopNavbar() {
         <div className="flex-1" />
 
         {/* Right Side Actions */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-3">
           {/* Search Button */}
           <Button 
             variant="ghost" 
             size="icon" 
             className="h-8 w-8 hover:bg-accent transition-all duration-150 ease-in-out"
-            onClick={() => {
-              if (typeof document !== 'undefined') {
-                const searchInput = document.getElementById('search') as HTMLInputElement;
-                if (searchInput) {
-                  searchInput.focus();
-                } else if (typeof window !== 'undefined') {
-                  window.location.href = '/search';
-                }
-              }
-            }}
+            onClick={() => setIsSearchModalOpen(true)}
           >
             <Search className="h-4 w-4" />
             <span className="sr-only">بحث</span>
@@ -166,6 +166,17 @@ export function TopNavbar() {
           <div className="transition-all duration-150 ease-in-out">
             <ModeToggle />
           </div>
+
+          {/* Primary CTA Button */}
+          <Button 
+            asChild
+            size="sm"
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-4 py-2 transition-all duration-150 ease-in-out"
+          >
+            <Link href="/tutorials">
+              ابدأ مجانًا
+            </Link>
+          </Button>
 
           {/* Mobile Menu */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -249,6 +260,12 @@ export function TopNavbar() {
           </Sheet>
         </div>
       </div>
+      
+      {/* Search Modal */}
+      <SearchModal 
+        isOpen={isSearchModalOpen} 
+        onClose={() => setIsSearchModalOpen(false)} 
+      />
     </nav>
   )
 }

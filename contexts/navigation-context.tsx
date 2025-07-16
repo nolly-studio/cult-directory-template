@@ -24,7 +24,7 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
   // Auto-generate breadcrumbs from pathname
   useEffect(() => {
     const segments = pathname.split('/').filter(Boolean)
-    const defaultBreadcrumbs = [
+    const defaultBreadcrumbs: NavigationContextType['breadcrumbs'] = [
       { label: 'الرئيسية', href: '/' }
     ]
 
@@ -47,11 +47,16 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
         const label = pathMapping[segment] || segment
         const isLast = index === segments.length - 1
         
-        defaultBreadcrumbs.push({
+        const breadcrumb: { label: string; href?: string; current?: boolean } = {
           label,
-          href: isLast ? undefined : currentPath,
           current: isLast
-        })
+        }
+        
+        if (!isLast) {
+          breadcrumb.href = currentPath
+        }
+        
+        defaultBreadcrumbs.push(breadcrumb)
       })
     }
 
