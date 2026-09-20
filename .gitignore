@@ -39,3 +39,7 @@ next-env.d.ts
 
 __data__
 **/stage-1-crawl/storage
+
+# Railway Zero-Secrets - Local secrets file
+# This file should be stored locally, not in version control
+master.secrets.json

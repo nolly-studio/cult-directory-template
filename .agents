@@ -1,0 +1,91 @@
+{
+  "project": "cult-directory-template",
+  "description": "Secret specification file for Railway Zero-Secrets Bootstrapper and downstream secret-injection agents",
+  "version": "1.0.0",
+  "core": [
+    {
+      "name": "NEXT_PUBLIC_SUPABASE_URL",
+      "description": "Supabase project API URL",
+      "format": "https://<project-id>.supabase.co",
+      "required": true,
+      "placeholder": "https://your-project.supabase.co",
+      "module": "database"
+    },
+    {
+      "name": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+      "description": "Supabase anonymous/public key for client-side access",
+      "format": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "required": true,
+      "placeholder": "your-supabase-anon-key",
+      "module": "database"
+    }
+  ],
+  "optional": [
+    {
+      "name": "SUPABASE_SERVICE_ROLE_KEY",
+      "description": "Supabase service role key for server-side admin operations",
+      "format": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "required": false,
+      "placeholder": "your-supabase-service-role-key",
+      "module": "database",
+      "note": "Required for admin operations and seed scripts"
+    },
+    {
+      "name": "ANTHROPIC_API_KEY",
+      "description": "Anthropic Claude API key for AI enrichment",
+      "format": "sk-ant-...",
+      "required": false,
+      "placeholder": "your-anthropic-api-key",
+      "module": "ai_integration",
+      "note": "Optional: Only needed for AI bulk enrichment features"
+    },
+    {
+      "name": "OPENAI_API_KEY",
+      "description": "OpenAI API key for AI enrichment (alternative to Anthropic)",
+      "format": "sk-...",
+      "required": false,
+      "placeholder": "your-openai-api-key",
+      "module": "ai_integration",
+      "note": "Optional: Alternative to Anthropic API key for AI features"
+    }
+  ],
+  "required_secrets": [
+    "NEXT_PUBLIC_SUPABASE_URL",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+  ],
+  "schema": {
+    "modules": {
+      "database": {
+        "description": "Supabase database configuration",
+        "required": true,
+        "variables": ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY", "SUPABASE_SERVICE_ROLE_KEY"]
+      },
+      "ai_integration": {
+        "description": "AI/ML API integrations for content enrichment",
+        "required": false,
+        "variables": ["ANTHROPIC_API_KEY", "OPENAI_API_KEY"],
+        "note": "Can be disabled for initial deployment; only one AI provider needed"
+      }
+    },
+    "deployment": {
+      "platform": "railway",
+      "fallback": ["coolify", "vercel"],
+      "minimum_tier": "free",
+      "auto_shutdown": true,
+      "maintenance_mode_supported": true
+    },
+    "stub_behavior": {
+      "ai_integration": "disabled_with_fallback_data",
+      "description": "When AI keys are missing, use pre-enriched data from supabase/seed/src/stage-2-enrich/__data__/"
+    }
+  },
+  "master_secrets_template": {
+    "cult-directory-template": {
+      "NEXT_PUBLIC_SUPABASE_URL": "",
+      "NEXT_PUBLIC_SUPABASE_ANON_KEY": "",
+      "SUPABASE_SERVICE_ROLE_KEY": "",
+      "ANTHROPIC_API_KEY": "",
+      "OPENAI_API_KEY": ""
+    }
+  }
+}

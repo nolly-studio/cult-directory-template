@@ -186,7 +186,7 @@ export function NavSidebar({
                           onClick={handleLinkClick}
                         >
                           <PlusIcon className="h-5 w-5" />
-                          Submit
+                          Publicar Negocio
                         </Link>
 
                         <Link

@@ -1,0 +1,60 @@
+[build]
+builder = "NIXPACKS"
+buildCommand = "pnpm install --frozen-lockfile && pnpm run build"
+
+[deploy]
+startCommand = "pnpm start"
+healthcheckPath = "/"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+# Cost-protection guardrails - enforce minimal resource usage
+# These settings help stay within Railway free tier limits
+[deploy.resources]
+# Limit memory to 512MB (free tier friendly)
+memoryMB = 512
+# Limit CPU shares (lower = less resource usage)
+cpuShares = 256
+
+# Environment variables for build optimization
+[build.env]
+NODE_ENV = "production"
+# Optimize Next.js for smaller builds
+NEXT_TELEMETRY_DISABLED = "1"
+
+# Runtime environment defaults
+[deploy.env]
+PORT = "3000"
+NODE_ENV = "production"
+# Cost guardrail marker: Set to 'true' to enable free-tier monitoring
+RAILWAY_FREE_TIER_GUARD = "true"
+# Auto-shutdown marker: Set maintenance mode threshold (in hours of usage)
+RAILWAY_USAGE_THRESHOLD_HOURS = "450"
+
+# ============================================================
+# COST PROTECTION NOTES FOR MONITORING AGENTS
+# ============================================================
+# 
+# Free Tier Limits (as of 2024):
+# - $5 credit per month
+# - ~500 hours of execution time
+# - RAM: Keep under 512MB
+# - CPU: Minimal usage recommended
+#
+# Monitoring Points:
+# - Check Railway usage dashboard regularly
+# - If usage approaches 80% of free tier:
+#   1. Consider auto-shutdown
+#   2. Deploy maintenance.html
+#   3. Prepare Coolify migration
+#
+# Auto-Shutdown Trigger Conditions:
+# - Usage > 90% of monthly credit
+# - Memory consistently > 450MB
+# - Response times degraded
+#
+# To manually trigger maintenance mode:
+# - Deploy public/maintenance.html as static site
+# - Or set MAINTENANCE_MODE=true in environment
+# ============================================================

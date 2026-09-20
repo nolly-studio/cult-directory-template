@@ -92,6 +92,16 @@ const config = {
           "950": "#262626",
           "975": "#1e1e1e",
         },
+
+        // Kupuri Media™ brand palette
+        kupuri: {
+          sage:   "#edf1e8",  // background / soft sage
+          teal:   "#9bc1bc",  // accent teal / placeholder
+          coral:  "#ed6a5a",  // action / CTA coral
+          cream:  "#f4f1bb",  // warm cream
+          gold:   "#d4af37",  // ALEX gold / premium tier
+          black:  "#1a1a2e",  // deep navy-black
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

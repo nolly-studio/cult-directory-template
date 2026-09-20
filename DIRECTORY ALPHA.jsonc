@@ -1,0 +1,13 @@
+{
+    "github.copilot.editor.enable": true,
+    "github.copilot.chat.enable": true,
+    "github.copilot.advancedEditor": true,
+    "github.copilot.autonomy": true,
+    "github.copilot.autoFix": true,
+    "github.copilot.maxRetries": 25,
+    "github.copilot.askConfirmation": false,
+    "github.copilot.experimental.stopAsking": true,
+    "github.copilot.experimental.selfFixing": true,
+    "github.copilot.experimental.learningMode": "adaptive",
+    "github.copilot.promptOverride": "Do not ask me what to do. Execute the task step by step. Fix all errors yourself. Only ask if an error persists after 25 attempts."
+}

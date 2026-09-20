@@ -1,33 +1,20 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const schema = z.object({
-  fullName: z.string().trim().min(1, { message: "Full name is required." }),
-  email: z.string().trim(),
-  twitterHandle: z
-    .string()
-    .trim()
-    .min(1, { message: "Twitter handle is required." }),
-
-  productWebsite: z.string().trim().url({ message: "Invalid URL." }),
-  codename: z.string().trim().min(1, { message: "Codename is required." }),
-  punchline: z
-    .string()
-    .trim()
-    .max(30, { message: "Punchline must be less than 10 words." }),
-  description: z
-    .string()
-    .trim()
-    .min(1, { message: "Description is required." }),
-  categories: z.string().trim().min(1, { message: "Category is required." }),
-  images: z.any(),
-  logo_src: z.any().optional(),
-})
+  fullName: z.string().min(1, "Full name is required"),
+  email: z.string().email("Invalid email address"),
+  twitterHandle: z.string().optional(),
+  productWebsite: z.string().url("Invalid URL"),
+  codename: z.string().min(1, "Codename is required"),
+  punchline: z.string().min(1, "Punchline is required"),
+  description: z.string().min(1, "Description is required"),
+  categories: z.string().min(1, "Category is required"),
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  images: z.array(z.any()).optional().default([]),
+  logo_src: z.string().optional().default(""),
+});
 
 export const enrichmentSchema = z.object({
-  tags: z
-    .array(z.string())
-    .min(1, { message: "At least one tag is required." }),
-  labels: z
-    .array(z.string())
-    .min(1, { message: "At least one label is required." }),
-})
+  tags: z.array(z.string()),
+  labels: z.array(z.string()).optional(),
+});

@@ -1,0 +1,12 @@
+{
+    // ...existing settings...
+    "copilot.experimental.autonomousMode": true,
+    "copilot.experimental.selfFixing": true,
+    "copilot.experimental.autoRetry": 25,
+    "copilot.experimental.confirmationThreshold": 0,
+    "copilot.experimental.errorHandling": "self-fix",
+    "copilot.experimental.learningMode": "adaptive",
+    "copilot.experimental.stopAsking": true,
+    "copilot.experimental.onlyAskIfBlocked": true,
+    "copilot.chat.prompt.default": "Do not ask me what to do. Execute the task step by step. Fix all errors yourself. Only ask if an error persists after 25 attempts."
+}
