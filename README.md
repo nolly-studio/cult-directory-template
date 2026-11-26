@@ -211,6 +211,8 @@ Designed to help you build and launch well designed startups fast.
    supabase db push
    ```
 
+On pull requests that change Supabase migrations, [RattleCheck](.github/workflows/rattlecheck.yml) compares SQL permissions with the base branch and flags new high or critical findings at the affected SQL line. The check runs without database credentials.
+
 ## Ensure your `.env` variables are configured correctly
 
 ```bash
